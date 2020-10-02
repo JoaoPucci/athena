@@ -1,0 +1,1 @@
+INSERT INTO user(name, email, password) VALUES("Goku", "goku@kamehouse.com", "$2a$10$HEZQQqXdw4vZtcLcNCnaQOyh/Jdi0YhiidEuWld5oMp30QiAuUTHe");
