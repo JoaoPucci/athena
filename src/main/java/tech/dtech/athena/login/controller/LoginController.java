@@ -1,9 +1,8 @@
-package tech.dtech.athena.controller;
+package tech.dtech.athena.login.controller;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import tech.dtech.athena.config.security.TokenService;
-import tech.dtech.athena.controller.form.LoginForm;
-import tech.dtech.athena.model.TokenDTO;
+import tech.dtech.athena.login.dto.TokenDTO;
+import tech.dtech.athena.login.form.LoginForm;
 
 @RestController
 @RequestMapping("/login")

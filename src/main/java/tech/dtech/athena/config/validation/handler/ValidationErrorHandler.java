@@ -1,4 +1,4 @@
-package tech.dtech.athena.controller;
+package tech.dtech.athena.config.validation.handler;
 
 import java.util.ArrayList;
 import java.util.List;

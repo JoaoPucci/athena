@@ -1,4 +1,4 @@
-package tech.dtech.athena.model;
+package tech.dtech.athena.login.dto;
 
 public class TokenDTO {
 	
