@@ -1,4 +1,4 @@
-package tech.dtech.athena.controller.form;
+package tech.dtech.athena.login.form;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
