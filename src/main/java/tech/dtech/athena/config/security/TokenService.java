@@ -14,10 +14,10 @@ import tech.dtech.athena.model.User;
 @Service
 public class TokenService {
 	
-	@Value("${forum.jwt.expiration_millis}")
+	@Value("${athena.jwt.expiration_millis}")
 	private String expirationMillis;
 	
-	@Value("${forum.jwt.secret}")
+	@Value("${athena.jwt.secret}")
 	private String secret;
 
 	public String generate(Authentication authentication) {

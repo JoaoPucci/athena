@@ -1,4 +1,4 @@
-package tech.dtech.athena.login.form;
+package tech.dtech.athena.controller.form;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -9,29 +9,33 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 
 public class LoginForm {
 
-	private String email;
-	private String password;
-	
-	@NotNull @NotEmpty @Email
-	public String getEmail() {
-		return email;
-	}
+    private String email;
+    private String password;
 
-	@NotNull @NotEmpty @Length(min = 6)
-	public String getPassword() {
-		return password;
-	}
-	
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    @NotNull
+    @NotEmpty
+    @Email
+    public String getEmail() {
+        return email;
+    }
 
-	public UsernamePasswordAuthenticationToken toSecurityCredentials() {
-		return new UsernamePasswordAuthenticationToken(getEmail(), getPassword());
-	}
-	
+    @NotNull
+    @NotEmpty
+    @Length(min = 8)
+    public String getPassword() {
+        return password;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public UsernamePasswordAuthenticationToken toSecurityCredentials() {
+        return new UsernamePasswordAuthenticationToken(getEmail(), getPassword());
+    }
+
 }
