@@ -3,6 +3,7 @@ package tech.dtech.athena.login.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,24 +21,24 @@ import tech.dtech.athena.login.form.LoginForm;
 @RestController
 @RequestMapping("/login")
 public class LoginController {
-	
-	@Autowired
-	private AuthenticationManager authenticationManager;
-	
-	@Autowired
-	private TokenService tokenService;
-	
-	@PostMapping
-	public ResponseEntity<TokenDTO> authenticate(@RequestBody @Valid LoginForm form) {
-		UsernamePasswordAuthenticationToken credentials = form.toSecurityCredentials();
-		
-		try {
-			Authentication authentication = authenticationManager.authenticate(credentials);
-			String token = tokenService.generate(authentication);		
-			return ResponseEntity.ok(new TokenDTO(token, "Bearer"));
-		} catch (AuthenticationException e) {
-			return ResponseEntity.badRequest().build();
-		}
-	}
-	
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private TokenService tokenService;
+
+    @PostMapping
+    public ResponseEntity<TokenDTO> authenticate(@RequestBody @Valid LoginForm form) {
+        UsernamePasswordAuthenticationToken credentials = form.toSecurityCredentials();
+
+        try {
+            Authentication authentication = authenticationManager.authenticate(credentials);
+            String token = tokenService.generate(authentication);
+            return ResponseEntity.ok(new TokenDTO(token, "Bearer"));
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
 }

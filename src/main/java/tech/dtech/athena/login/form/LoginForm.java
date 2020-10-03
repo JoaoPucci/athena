@@ -12,12 +12,12 @@ public class LoginForm {
 	private String email;
 	private String password;
 	
-	@NotNull @NotEmpty @Email(message = "Deve ser sagaz")
+	@NotNull @NotEmpty @Email
 	public String getEmail() {
 		return email;
 	}
 
-	@NotNull @NotEmpty @Length(min = 8)
+	@NotNull @NotEmpty @Length(min = 6)
 	public String getPassword() {
 		return password;
 	}
