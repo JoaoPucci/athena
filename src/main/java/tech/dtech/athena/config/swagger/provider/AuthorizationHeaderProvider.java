@@ -14,7 +14,7 @@ public class AuthorizationHeaderProvider implements IRequestParameterProvider {
         return new RequestParameterBuilder()
             .name("Authorization")
             .in(ParameterType.HEADER)
-            .description("Authorization header")
+            .description("token")
             .required(false)
             .build();
     }
