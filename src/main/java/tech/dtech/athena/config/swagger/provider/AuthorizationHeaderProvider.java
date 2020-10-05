@@ -7,7 +7,7 @@ import springfox.documentation.service.ParameterType;
 import springfox.documentation.service.RequestParameter;
 
 @Component(value = "authorizationProvider")
-public class AuthorizationHeaderProvider implements IHeaderParameterProvider {
+public class AuthorizationHeaderProvider implements IRequestParameterProvider {
 
     @Override
     public RequestParameter getParameter() {

@@ -11,7 +11,7 @@ import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import tech.dtech.athena.config.swagger.provider.IHeaderParameterProvider;
+import tech.dtech.athena.config.swagger.provider.IRequestParameterProvider;
 import tech.dtech.athena.model.User;
 
 @Configuration
@@ -19,7 +19,7 @@ public class SwaggerConfigurations {
 
     @Autowired
     @Qualifier("authorizationProvider")
-    private IHeaderParameterProvider authorizationHeader;
+    private IRequestParameterProvider authorizationHeader;
 
     @Bean
     public Docket athenaApi() {
