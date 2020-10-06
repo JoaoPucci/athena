@@ -8,24 +8,24 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import tech.dtech.athena.model.User;
-import tech.dtech.athena.repository.UserRepository;
+import tech.dtech.athena.model.Account;
+import tech.dtech.athena.repository.AccountRepository;
 
 @Service
 public class AuthenticationService implements UserDetailsService {
 
-	@Autowired
-	private UserRepository userRepository;
+    @Autowired
+    private AccountRepository accountRepository;
 
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Optional<User> user = userRepository.findByEmail(username);
-		
-		if(user.isPresent()) {
-			return user.get();
-		}
-		
-		throw new UsernameNotFoundException("Invalid credentials");
-	}
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<Account> account = accountRepository.findByEmail(username);
+
+        if (account.isPresent()) {
+            return account.get();
+        }
+
+        throw new UsernameNotFoundException("Invalid credentials");
+    }
 
 }

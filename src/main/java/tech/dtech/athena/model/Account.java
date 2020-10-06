@@ -16,7 +16,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-public class User implements UserDetails {
+public class Account implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
 
@@ -97,7 +97,7 @@ public class User implements UserDetails {
 	            return false;
 	        if (getClass() != obj.getClass())
 	            return false;
-	        User other = (User) obj;
+	        Account other = (Account) obj;
 	        if (email == null) {
 	            if (other.email != null)
 	                return false;

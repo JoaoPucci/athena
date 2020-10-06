@@ -11,48 +11,49 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import tech.dtech.athena.model.User;
-import tech.dtech.athena.repository.UserRepository;
+import tech.dtech.athena.model.Account;
+import tech.dtech.athena.repository.AccountRepository;
 
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
-	
-	private TokenService tokenService;
-	private UserRepository userRepository;
 
-	public TokenAuthenticationFilter(TokenService tokenService, UserRepository userRepository) {
-		this.tokenService = tokenService;
-		this.userRepository = userRepository;
-	}
+    private TokenService tokenService;
+    private AccountRepository accountRepository;
 
-	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException {
+    public TokenAuthenticationFilter(TokenService tokenService, AccountRepository accountRepository) {
+        this.tokenService = tokenService;
+        this.accountRepository = accountRepository;
+    }
 
-		String token = getToken(request);
-		boolean isValid = tokenService.isValid(token);
-		
-		if (isValid) {
-			authenticate(token);
-		}
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
 
-		filterChain.doFilter(request, response);
-	}
+        String token = getToken(request);
+        boolean isValid = tokenService.isValid(token);
 
-	private void authenticate(String token) {
-		Long userId = tokenService.getUserId(token);
-		User user = userRepository.findById(userId).get();
-		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-	}
+        if (isValid) {
+            authenticate(token);
+        }
 
-	private String getToken(HttpServletRequest request) {
-		String token = request.getHeader("Authorization");
+        filterChain.doFilter(request, response);
+    }
 
-		if (token == null || token.isEmpty() || !token.startsWith("Bearer")) {
-			return null;
-		}
-		
-		return token.substring(7, token.length());
-	}
+    private void authenticate(String token) {
+        Long accountId = tokenService.getAccountId(token);
+        Account account = accountRepository.findById(accountId).get();
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(account, null,
+                account.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+
+    private String getToken(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+
+        if (token == null || token.isEmpty() || !token.startsWith("Bearer")) {
+            return null;
+        }
+
+        return token.substring(7, token.length());
+    }
 
 }
