@@ -3,16 +3,18 @@ package tech.dtech.athena.repository;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import tech.dtech.athena.model.Account;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
+@ActiveProfiles(value = "test")
 public class AccountRepositoryTest {
 
     @Autowired
