@@ -6,8 +6,8 @@ import org.springframework.data.repository.CrudRepository;
 
 import tech.dtech.athena.model.Account;
 
-public interface AccountRepository extends CrudRepository<Account, Long>{
-	
-	Optional<Account> findByEmail(String email);
-	
+public interface AccountRepository extends CrudRepository<Account, Long> {
+
+    Optional<Account> findByEmail(String email);
+
 }
