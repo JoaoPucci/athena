@@ -18,4 +18,4 @@ jobs:
         java-version: 11
 
     - name: Run tests
-      run: sudo ./mvnw test
+      run: sudo ./mvnw clean install
