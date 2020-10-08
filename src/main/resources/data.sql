@@ -10,4 +10,4 @@ INSERT INTO role(name) VALUES('ROLE_USER');
 INSERT INTO account_roles(account_id, roles_id) VALUES(1, 1);
 INSERT INTO account_roles(account_id, roles_id) VALUES(3, 1);
 -- Roles USER
-INSERT INTO account_roles(account_id, roles_id) VALUES(2, 2);
+INSERT INTO account_roles(account_id, roles_id) VALUES(2, 2); 
