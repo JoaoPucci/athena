@@ -5,13 +5,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import tech.dtech.athena.model.Account;
 
 @DataJpaTest
+@ExtendWith(SpringExtension.class)
 public class AccountRepositoryTest {
 
     @Autowired

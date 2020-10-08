@@ -19,9 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 import tech.dtech.athena.model.Account;
 import tech.dtech.athena.repository.AccountRepository;
 
-@ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
 @SpringBootTest
+@ExtendWith(SpringExtension.class)
 public class LoginControllerTest {
 
     @Autowired
