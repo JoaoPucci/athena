@@ -9,29 +9,22 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 
 public class LoginForm {
 
-    private String email;
-    private String password;
-
     @NotNull
     @NotEmpty
     @Email
-    public String getEmail() {
-        return email;
-    }
+    private String email;
 
     @NotNull
     @NotEmpty
     @Length(min = 8)
+    private String password;
+
+    public String getEmail() {
+        return email;
+    }
+
     public String getPassword() {
         return password;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public UsernamePasswordAuthenticationToken toSecurityCredentials() {
