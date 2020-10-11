@@ -34,7 +34,7 @@ public class LoginControllerTest {
     private String nullEmailError = "{\"field\":\"email\",\"message\":\"must not be null\"}";
     private String malformedEmailError = "{\"field\":\"email\",\"message\":\"must be a well-formed email address\"}";
     private String emptyPasswordError = "{\"field\":\"password\",\"message\":\"must not be empty\"}";
-    private String invalidLengthPasswordError = "{\"field\":\"password\",\"message\":\"length must be between 8 and 2147483647\"}";
+    private String invalidLengthPasswordError = "{\"field\":\"password\",\"message\":\"length must be between 8 and 255\"}";
     private String nullPasswordError = "{\"field\":\"password\",\"message\":\"must not be null\"}";
 
     @Transactional
@@ -98,7 +98,7 @@ public class LoginControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.post(uri).content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(HttpStatus.BAD_REQUEST.value()))
-                .andExpect(MockMvcResultMatchers.content().json("[" + emptyEmailError + "," + nullEmailError + "]"));
+                .andExpect(MockMvcResultMatchers.content().json("[" + emptyEmailError + "]"));
     }
 
     @Test
@@ -138,7 +138,7 @@ public class LoginControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.post(uri).content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(HttpStatus.BAD_REQUEST.value()))
-                .andExpect(MockMvcResultMatchers.content().json("[" + emptyPasswordError + "," + nullPasswordError + "]"));
+                .andExpect(MockMvcResultMatchers.content().json("[" + emptyPasswordError + "]"));
     }
 
     @Test
