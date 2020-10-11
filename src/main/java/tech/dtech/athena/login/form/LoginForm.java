@@ -2,21 +2,19 @@ package tech.dtech.athena.login.form;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 public class LoginForm {
 
-    @NotNull
     @NotEmpty
     @Email
+    @Length(max = 255)
     private String email;
 
-    @NotNull
     @NotEmpty
-    @Length(min = 8)
+    @Length(min = 8, max = 255)
     private String password;
 
     public String getEmail() {

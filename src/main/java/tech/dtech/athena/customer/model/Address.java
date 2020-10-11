@@ -12,7 +12,6 @@ public class Address {
     private String state;
 
     public Address() {
-
     }
 
     public Address(String zipCode, String address, String neighbourhood, String city, String state) {

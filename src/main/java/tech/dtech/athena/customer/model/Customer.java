@@ -22,7 +22,6 @@ public class Customer {
     private Address address;
 
     public Customer() {
-
     }
 
     public Customer(String cpf, String rg, String fullName, String email, Address address) {

@@ -2,7 +2,6 @@ package tech.dtech.athena.customer.form;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.br.CPF;
@@ -11,16 +10,21 @@ import tech.dtech.athena.customer.model.Customer;
 
 public class CustomerForm {
 
-    @NotNull @NotEmpty @CPF
+    @NotEmpty
+    @CPF
+    @Length(max = 255)
     private String cpf;
 
-    @NotNull @NotEmpty @Length(min = 9)
+    @Length(min = 9)
     private String rg;
 
-    @NotNull @NotEmpty
+    @NotEmpty
+    @Length(max = 255)
     private String fullName;
 
-    @NotNull @NotEmpty @Email
+    @NotEmpty
+    @Email
+    @Length(max = 255)
     private String email;
 
     private AddressForm address;
