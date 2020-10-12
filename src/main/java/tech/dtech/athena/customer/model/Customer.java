@@ -9,6 +9,8 @@ import javax.persistence.Id;
 @Entity
 public class Customer {
 
+    public static final int RG_MIN_LENGTH = 9;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

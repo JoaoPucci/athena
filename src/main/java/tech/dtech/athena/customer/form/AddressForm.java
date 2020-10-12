@@ -4,28 +4,29 @@ import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
 
+import tech.dtech.athena.config.validation.constants.DatabaseConstants;
 import tech.dtech.athena.customer.model.Address;
 
-public class AddressForm {
+public class AddressForm{
 
     @NotEmpty
-    @Length(max = 255)
+    @Length(max = DatabaseConstants.DATABASE_STRING_MAX_LENGTH)
     private String zipCode;
 
     @NotEmpty
-    @Length(max = 255)
+    @Length(max = DatabaseConstants.DATABASE_STRING_MAX_LENGTH)
     private String address;
 
     @NotEmpty
-    @Length(max = 255)
+    @Length(max = DatabaseConstants.DATABASE_STRING_MAX_LENGTH)
     private String neighbourhood;
 
     @NotEmpty
-    @Length(max = 255)
+    @Length(max = DatabaseConstants.DATABASE_STRING_MAX_LENGTH)
     private String city;
 
     @NotEmpty
-    @Length(max = 255)
+    @Length(max = DatabaseConstants.DATABASE_STRING_MAX_LENGTH)
     private String state;
 
     public String getZipCode() {

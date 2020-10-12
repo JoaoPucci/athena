@@ -6,25 +6,26 @@ import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.br.CPF;
 
+import tech.dtech.athena.config.validation.constants.DatabaseConstants;
 import tech.dtech.athena.customer.model.Customer;
 
 public class CustomerForm {
 
     @NotEmpty
     @CPF
-    @Length(max = 255)
+    @Length(max = DatabaseConstants.DATABASE_STRING_MAX_LENGTH)
     private String cpf;
 
-    @Length(min = 9)
+    @Length(min = Customer.RG_MIN_LENGTH)
     private String rg;
 
     @NotEmpty
-    @Length(max = 255)
+    @Length(max = DatabaseConstants.DATABASE_STRING_MAX_LENGTH)
     private String fullName;
 
     @NotEmpty
     @Email
-    @Length(max = 255)
+    @Length(max = DatabaseConstants.DATABASE_STRING_MAX_LENGTH)
     private String email;
 
     private AddressForm address;
