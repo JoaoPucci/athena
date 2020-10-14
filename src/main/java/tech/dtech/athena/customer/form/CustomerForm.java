@@ -13,10 +13,9 @@ public class CustomerForm {
 
     @NotEmpty
     @CPF
-    @Length(max = DatabaseConstants.DATABASE_STRING_MAX_LENGTH)
     private String cpf;
 
-    @Length(min = Customer.RG_MIN_LENGTH)
+    @Length(min = Customer.RG_MIN_LENGTH, max = Customer.RG_MAX_LENGTH)
     private String rg;
 
     @NotEmpty

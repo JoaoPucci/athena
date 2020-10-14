@@ -31,11 +31,9 @@ public class LoginControllerTest {
     private MockMvc mockMvc;
 
     private String emptyEmailError = "{\"field\":\"email\",\"message\":\"must not be empty\"}";
-    private String nullEmailError = "{\"field\":\"email\",\"message\":\"must not be null\"}";
     private String malformedEmailError = "{\"field\":\"email\",\"message\":\"must be a well-formed email address\"}";
     private String emptyPasswordError = "{\"field\":\"password\",\"message\":\"must not be empty\"}";
     private String invalidLengthPasswordError = "{\"field\":\"password\",\"message\":\"length must be between 8 and 255\"}";
-    private String nullPasswordError = "{\"field\":\"password\",\"message\":\"must not be null\"}";
 
     @Transactional
     @Test

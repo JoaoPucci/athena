@@ -5,6 +5,8 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Address {
 
+    public static final int ZIP_CODE_LENGTH = 8;
+
     private String zipCode;
     private String address;
     private String neighbourhood;

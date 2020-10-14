@@ -10,7 +10,7 @@ import tech.dtech.athena.customer.model.Address;
 public class AddressForm{
 
     @NotEmpty
-    @Length(max = DatabaseConstants.DATABASE_STRING_MAX_LENGTH)
+    @Length(min = Address.ZIP_CODE_LENGTH, max = Address.ZIP_CODE_LENGTH)
     private String zipCode;
 
     @NotEmpty
