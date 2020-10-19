@@ -1,4 +1,4 @@
-package tech.dtech.athena.config.validation.annotations;
+package tech.dtech.athena.config.validation.validators.annotations;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-import tech.dtech.athena.config.validation.validator.NullOrNotBlankValidator;
+import tech.dtech.athena.config.validation.validators.NullOrNotBlankValidator;
 
 @Target({ ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)

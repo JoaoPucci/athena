@@ -1,9 +1,9 @@
-package tech.dtech.athena.config.validation.validator;
+package tech.dtech.athena.config.validation.validators;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import tech.dtech.athena.config.validation.annotations.NullOrNotBlank;
+import tech.dtech.athena.config.validation.validators.annotations.NullOrNotBlank;
 
 public class NullOrNotBlankValidator implements ConstraintValidator<NullOrNotBlank, String> {
 
