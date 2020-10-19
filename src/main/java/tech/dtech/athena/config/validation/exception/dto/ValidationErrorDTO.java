@@ -1,4 +1,4 @@
-package tech.dtech.athena.config.validation.dto;
+package tech.dtech.athena.config.validation.exception.dto;
 
 public class ValidationErrorDTO {
 	

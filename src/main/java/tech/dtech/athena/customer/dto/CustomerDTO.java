@@ -10,6 +10,7 @@ public class CustomerDTO {
     private String fullName;
     private String email;
     private AddressDTO address;
+    private String phoneNumber;
 
     public CustomerDTO(Customer customer) {
         this.id = customer.getId();
@@ -18,6 +19,7 @@ public class CustomerDTO {
         this.fullName = customer.getFullName();
         this.email = customer.getEmail();
         this.address = new AddressDTO(customer.getAddress());
+        this.phoneNumber = customer.getPhoneNumber();
     }
 
     public long getId() {
@@ -42,6 +44,10 @@ public class CustomerDTO {
 
     public AddressDTO getAddress() {
         return address;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
 }
