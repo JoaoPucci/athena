@@ -6,8 +6,8 @@ import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.br.CPF;
 
-import tech.dtech.athena.config.validation.annotations.NullOrNotBlank;
 import tech.dtech.athena.config.validation.constants.DatabaseConstants;
+import tech.dtech.athena.config.validation.validators.annotations.NullOrNotBlank;
 import tech.dtech.athena.customer.model.Customer;
 
 public class CustomerForm {
