@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.br.CPF;
 
 import tech.dtech.athena.config.validation.constants.DatabaseConstants;
+import tech.dtech.athena.config.validation.validators.annotations.E164;
 import tech.dtech.athena.config.validation.validators.annotations.NullOrNotBlank;
 import tech.dtech.athena.customer.model.Customer;
 
@@ -28,7 +29,7 @@ public class CustomerForm {
     @Length(max = DatabaseConstants.DATABASE_STRING_MAX_LENGTH)
     private String email;
 
-    @Length(max = DatabaseConstants.DATABASE_STRING_MAX_LENGTH)
+    @E164
     private String phoneNumber;
 
     private AddressForm address;
