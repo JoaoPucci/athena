@@ -11,7 +11,7 @@ public class E164Validator implements ConstraintValidator<E164, String> {
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        return value != null ? Pattern.compile("^\\+?[1-9]\\d{1,14}$").matcher(value).matches() : true;
+        return value == null || Pattern.compile("^\\+(?:[0-9]?){6,14}[0-9]$").matcher(value).matches();
     }
 
 }
