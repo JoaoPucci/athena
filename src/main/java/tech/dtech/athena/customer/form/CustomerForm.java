@@ -7,6 +7,8 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.br.CPF;
 
 import tech.dtech.athena.config.validation.constants.DatabaseConstants;
+import tech.dtech.athena.config.validation.validators.annotations.E164;
+import tech.dtech.athena.config.validation.validators.annotations.NullOrNotBlank;
 import tech.dtech.athena.customer.model.Customer;
 
 public class CustomerForm {
@@ -22,10 +24,13 @@ public class CustomerForm {
     @Length(max = DatabaseConstants.DATABASE_STRING_MAX_LENGTH)
     private String fullName;
 
-    @NotEmpty
+    @NullOrNotBlank
     @Email
     @Length(max = DatabaseConstants.DATABASE_STRING_MAX_LENGTH)
     private String email;
+
+    @E164
+    private String phoneNumber;
 
     private AddressForm address;
 
@@ -49,7 +54,11 @@ public class CustomerForm {
         return address;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
     public Customer transform() {
-        return new Customer(cpf, rg, fullName, email, address.transform());
+        return new Customer(cpf, rg, fullName, email, address.transform(), phoneNumber);
     }
 }

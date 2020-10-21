@@ -1,4 +1,4 @@
-package tech.dtech.athena.config.validation.handler;
+package tech.dtech.athena.config.validation.exceptions.handler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import tech.dtech.athena.config.validation.dto.ValidationErrorDTO;
+import tech.dtech.athena.config.validation.exceptions.dto.ValidationErrorDTO;
 
 @RestControllerAdvice
 public class ValidationErrorHandler {
-	
+
 	@Autowired
 	private MessageSource messageSource;
 
@@ -26,13 +26,13 @@ public class ValidationErrorHandler {
 	public List<ValidationErrorDTO> handle(MethodArgumentNotValidException exception) {
 		List<ValidationErrorDTO> response = new ArrayList<>();
 		List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
-		
+
 		fieldErrors.stream().forEach(e-> {
 			String errorMessage = messageSource.getMessage(e, LocaleContextHolder.getLocale());
 			ValidationErrorDTO error = new ValidationErrorDTO(e.getField(), errorMessage);
 			response.add(error);
 		});
-		
+
 		return response;
 	}
 

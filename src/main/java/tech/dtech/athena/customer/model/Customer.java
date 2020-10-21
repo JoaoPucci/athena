@@ -20,6 +20,7 @@ public class Customer {
     private String rg;
     private String fullName;
     private String email;
+    private String phoneNumber;
 
     @Embedded
     private Address address;
@@ -27,12 +28,13 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(String cpf, String rg, String fullName, String email, Address address) {
+    public Customer(String cpf, String rg, String fullName, String email, Address address, String phoneNumber) {
         this.cpf = cpf;
         this.rg = rg;
         this.fullName = fullName;
         this.email = email;
         this.address = address;
+        this.phoneNumber = phoneNumber;
     }
 
     public long getId() {
@@ -57,6 +59,10 @@ public class Customer {
 
     public Address getAddress() {
         return address;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
 }
