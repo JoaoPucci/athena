@@ -26,8 +26,14 @@ public class CustomerController {
 
     @PostMapping
     public ResponseEntity<CustomerDTO> create(@RequestBody @Valid CustomerForm customerForm, UriComponentsBuilder uriBuilder){
-        Customer customer = repository.save(customerForm.transform());
-        URI uri = uriBuilder.path("customers/{id}").buildAndExpand(customer.getId()).toUri();
-        return ResponseEntity.created(uri).body(new CustomerDTO(customer));
+        boolean isDuplicated = repository.findByCpf(customerForm.getCpf()).isPresent();
+
+        if (isDuplicated) {
+            return ResponseEntity.unprocessableEntity().build();
+        } else {
+            Customer customer = repository.save(customerForm.transform());
+            URI uri = uriBuilder.path("customers/{id}").buildAndExpand(customer.getId()).toUri();
+            return ResponseEntity.created(uri).body(new CustomerDTO(customer));
+        }
     }
 }
