@@ -16,7 +16,7 @@ import tech.dtech.athena.config.validation.validators.E164Validator;
 @Documented
 @Constraint(validatedBy = E164Validator.class)
 public @interface E164 {
-    String message() default "{javax.validation.constraints.Pattern.message}";
+    String message() default "inválido";
 
     Class<?>[] groups() default {};
 
