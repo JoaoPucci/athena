@@ -1,5 +1,6 @@
 package tech.dtech.athena.customer.model;
 
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +17,9 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(unique = true)
     private String cpf;
+
     private String rg;
     private String fullName;
     private String email;

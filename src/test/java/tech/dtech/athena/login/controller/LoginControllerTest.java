@@ -116,7 +116,7 @@ public class LoginControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.post(uri).content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(HttpStatus.BAD_REQUEST.value()))
-                .andExpect(MockMvcResultMatchers.content().string("[" + malformedEmailError + "]"));
+                .andExpect(MockMvcResultMatchers.content().json("[" + malformedEmailError + "]"));
     }
 
     @Test
@@ -146,7 +146,7 @@ public class LoginControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.post(uri).content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().is(HttpStatus.BAD_REQUEST.value()))
-                .andExpect(MockMvcResultMatchers.content().string("[" + invalidLengthPasswordError + "]"));
+                .andExpect(MockMvcResultMatchers.content().json("[" + invalidLengthPasswordError + "]"));
     }
 
 }
