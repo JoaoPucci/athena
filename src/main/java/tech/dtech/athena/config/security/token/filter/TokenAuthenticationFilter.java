@@ -9,13 +9,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import tech.dtech.athena.config.security.token.usecase.AuthenticationUseCase;
+import tech.dtech.athena.config.security.token.usecase.TokenAuthenticationUseCase;
 
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
-    private AuthenticationUseCase useCase;
+    private TokenAuthenticationUseCase useCase;
 
-    public TokenAuthenticationFilter(AuthenticationUseCase useCase) {
+    public TokenAuthenticationFilter(TokenAuthenticationUseCase useCase) {
         this.useCase = useCase;
     }
 

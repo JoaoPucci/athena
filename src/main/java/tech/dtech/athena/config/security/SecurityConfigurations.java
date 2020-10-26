@@ -15,7 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import tech.dtech.athena.config.security.token.filter.TokenAuthenticationFilter;
-import tech.dtech.athena.config.security.token.usecase.AuthenticationUseCase;
+import tech.dtech.athena.config.security.token.usecase.TokenAuthenticationUseCase;
 
 @EnableWebSecurity
 @Configuration
@@ -25,7 +25,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
     private AuthenticationService authenticationService;
 
     @Autowired
-    private AuthenticationUseCase useCase;
+    private TokenAuthenticationUseCase tokenUseCase;
 
     @Override
     @Bean
@@ -52,7 +52,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
             .anyRequest().authenticated()
             .and().csrf().disable()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and().addFilterBefore(new TokenAuthenticationFilter(useCase),
+            .and().addFilterBefore(new TokenAuthenticationFilter(tokenUseCase),
                         UsernamePasswordAuthenticationFilter.class);
     }
 

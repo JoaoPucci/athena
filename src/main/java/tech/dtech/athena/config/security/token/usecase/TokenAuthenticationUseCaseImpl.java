@@ -12,7 +12,7 @@ import tech.dtech.athena.model.Account;
 import tech.dtech.athena.repository.AccountRepository;
 
 @Component
-public class AuthenticationUseCaseImpl implements AuthenticationUseCase {
+public class TokenAuthenticationUseCaseImpl implements TokenAuthenticationUseCase {
 
     @Autowired
     private TokenService tokenService;
