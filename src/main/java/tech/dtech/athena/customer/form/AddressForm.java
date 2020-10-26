@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.Length;
 import tech.dtech.athena.config.validation.constants.DatabaseConstants;
 import tech.dtech.athena.customer.model.Address;
 
-public class AddressForm{
+public class AddressForm {
 
     @NotEmpty
     @Length(min = Address.ZIP_CODE_LENGTH, max = Address.ZIP_CODE_LENGTH)
@@ -15,7 +15,11 @@ public class AddressForm{
 
     @NotEmpty
     @Length(max = DatabaseConstants.DATABASE_STRING_MAX_LENGTH)
-    private String address;
+    private String addressLine;
+
+    @NotEmpty
+    @Length(max = DatabaseConstants.DATABASE_STRING_MAX_LENGTH)
+    private String addressLine2;
 
     @NotEmpty
     @Length(max = DatabaseConstants.DATABASE_STRING_MAX_LENGTH)
@@ -33,8 +37,12 @@ public class AddressForm{
         return zipCode;
     }
 
-    public String getAddress() {
-        return address;
+    public String getAddressLine() {
+        return addressLine;
+    }
+
+    public String getAddressLine2() {
+        return addressLine2;
     }
 
     public String getNeighbourhood() {
@@ -50,6 +58,6 @@ public class AddressForm{
     }
 
     public Address transform() {
-        return new Address(zipCode, address, neighbourhood, city, state);
+        return new Address(this);
     }
 }

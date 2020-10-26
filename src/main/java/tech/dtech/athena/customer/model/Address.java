@@ -2,13 +2,16 @@ package tech.dtech.athena.customer.model;
 
 import javax.persistence.Embeddable;
 
+import tech.dtech.athena.customer.form.AddressForm;
+
 @Embeddable
 public class Address {
 
     public static final int ZIP_CODE_LENGTH = 8;
 
     private String zipCode;
-    private String address;
+    private String addressLine;
+    private String addressLine2;
     private String neighbourhood;
     private String city;
     private String state;
@@ -16,20 +19,25 @@ public class Address {
     public Address() {
     }
 
-    public Address(String zipCode, String address, String neighbourhood, String city, String state) {
-        this.zipCode = zipCode;
-        this.address = address;
-        this.neighbourhood = neighbourhood;
-        this.city = city;
-        this.state = state;
+    public Address(AddressForm form) {
+        this.zipCode = form.getZipCode();
+        this.addressLine = form.getAddressLine();
+        this.addressLine2 = form.getAddressLine2();
+        this.neighbourhood = form.getNeighbourhood();
+        this.city = form.getCity();
+        this.state = form.getState();
     }
 
     public String getZipCode() {
         return zipCode;
     }
 
-    public String getAddress() {
-        return address;
+    public String getAddressLine() {
+        return addressLine;
+    }
+
+    public String getAddressLine2() {
+        return addressLine2;
     }
 
     public String getNeighbourhood() {
