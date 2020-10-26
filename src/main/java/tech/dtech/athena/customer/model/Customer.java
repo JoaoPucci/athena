@@ -12,6 +12,8 @@ public class Customer {
 
     public static final int RG_MIN_LENGTH = 8;
     public static final int RG_MAX_LENGTH = 9;
+    public static final String ENTITY_NAME = "Cliente";
+    public static final String FIELD_CPF_NAME = "CPF";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

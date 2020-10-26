@@ -5,9 +5,9 @@ public class DuplicatedRecordException extends RuntimeException{
     private String field;
     private String entity;
 
-    public DuplicatedRecordException(String field, String entity) {
-        this.field = field;
+    public DuplicatedRecordException(String entity, String field) {
         this.entity = entity;
+        this.field = field;
     }
 
     @Override

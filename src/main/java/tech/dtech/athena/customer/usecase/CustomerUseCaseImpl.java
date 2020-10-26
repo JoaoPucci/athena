@@ -19,7 +19,7 @@ public class CustomerUseCaseImpl implements CustomerUseCase {
         boolean isDuplicated = repository.findByCpf(form.getCpf()).isPresent();
 
         if (isDuplicated) {
-            throw new DuplicatedRecordException("CPF", "Cliente");
+            throw new DuplicatedRecordException(Customer.ENTITY_NAME, Customer.FIELD_CPF_NAME);
         } else {
             return repository.save(form.transform());
         }
