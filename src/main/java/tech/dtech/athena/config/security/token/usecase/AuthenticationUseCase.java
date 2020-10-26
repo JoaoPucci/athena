@@ -1,4 +1,4 @@
-package tech.dtech.athena.config.security;
+package tech.dtech.athena.config.security.token.usecase;
 
 import javax.servlet.http.HttpServletRequest;
 

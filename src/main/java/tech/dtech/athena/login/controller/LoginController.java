@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import tech.dtech.athena.config.security.TokenService;
+import tech.dtech.athena.config.security.token.service.TokenService;
 import tech.dtech.athena.login.dto.TokenDTO;
 import tech.dtech.athena.login.form.LoginForm;
 

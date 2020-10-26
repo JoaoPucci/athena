@@ -1,4 +1,4 @@
-package tech.dtech.athena.config.security;
+package tech.dtech.athena.config.security.token.usecase;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -7,6 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import tech.dtech.athena.config.security.token.service.TokenService;
 import tech.dtech.athena.model.Account;
 import tech.dtech.athena.repository.AccountRepository;
 

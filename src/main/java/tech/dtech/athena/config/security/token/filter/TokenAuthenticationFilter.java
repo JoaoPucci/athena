@@ -1,4 +1,4 @@
-package tech.dtech.athena.config.security;
+package tech.dtech.athena.config.security.token.filter;
 
 import java.io.IOException;
 
@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import tech.dtech.athena.config.security.token.usecase.AuthenticationUseCase;
 
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
