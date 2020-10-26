@@ -44,7 +44,7 @@ public class CustomerForm {
     private AddressForm address;
 
     public String getCpf() {
-        return cpf;
+        return cpf.replace(".", "").replace("-", "");
     }
 
     public String getRg() {
