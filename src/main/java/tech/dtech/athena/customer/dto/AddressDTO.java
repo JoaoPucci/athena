@@ -5,14 +5,16 @@ import tech.dtech.athena.customer.model.Address;
 public class AddressDTO {
 
     private String zipCode;
-    private String address;
+    private String addressLine;
+    private String addressLine2;
     private String neighbourhood;
     private String city;
     private String state;
 
     public AddressDTO(Address address) {
         this.zipCode = address.getZipCode();
-        this.address = address.getAddress();
+        this.addressLine = address.getAddressLine();
+        this.addressLine2 = address.getAddressLine2();
         this.neighbourhood = address.getNeighbourhood();
         this.city = address.getCity();
         this.state = address.getState();
@@ -22,8 +24,12 @@ public class AddressDTO {
         return zipCode;
     }
 
-    public String getAddress() {
-        return address;
+    public String getAddressLine() {
+        return addressLine;
+    }
+
+    public String getAddressLine2() {
+        return addressLine2;
     }
 
     public String getNeighbourhood() {
