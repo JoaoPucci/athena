@@ -1,11 +1,15 @@
 package tech.dtech.athena.customer.model;
 
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import tech.dtech.athena.customer.form.CustomerForm;
 
 @Entity
 public class Customer {
@@ -26,6 +30,7 @@ public class Customer {
     private String fullName;
     private String email;
     private String phoneNumber;
+    private LocalDate birthdate;
 
     @Embedded
     private Address address;
@@ -33,13 +38,14 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(String cpf, String rg, String fullName, String email, Address address, String phoneNumber) {
-        this.cpf = cpf;
-        this.rg = rg;
-        this.fullName = fullName;
-        this.email = email;
-        this.address = address;
-        this.phoneNumber = phoneNumber;
+    public Customer(CustomerForm form) {
+        this.cpf = form.getCpf();
+        this.rg = form.getRg();
+        this.fullName = form.getFullName();
+        this.email = form.getEmail();
+        this.address = form.getAddress().transform();
+        this.phoneNumber = form.getPhoneNumber();
+        this.birthdate = form.getBirthday();
     }
 
     public long getId() {
@@ -68,6 +74,10 @@ public class Customer {
 
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public LocalDate getBirtdate() {
+        return birthdate;
     }
 
 }

@@ -1,5 +1,7 @@
 package tech.dtech.athena.customer.dto;
 
+import java.time.LocalDate;
+
 import tech.dtech.athena.customer.model.Customer;
 
 public class CustomerDTO {
@@ -11,6 +13,7 @@ public class CustomerDTO {
     private String email;
     private AddressDTO address;
     private String phoneNumber;
+    private LocalDate birthdate;
 
     public CustomerDTO(Customer customer) {
         this.id = customer.getId();
@@ -20,6 +23,7 @@ public class CustomerDTO {
         this.email = customer.getEmail();
         this.address = new AddressDTO(customer.getAddress());
         this.phoneNumber = customer.getPhoneNumber();
+        this.birthdate = customer.getBirtdate();
     }
 
     public long getId() {
@@ -48,6 +52,10 @@ public class CustomerDTO {
 
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public LocalDate getBirthdate() {
+        return birthdate;
     }
 
 }
