@@ -15,14 +15,12 @@ public class CustomerUseCaseImpl implements CustomerUseCase {
     private CustomerRepository repository;
 
     @Override
-    public Customer createNewCustomer(CustomerForm form) throws DuplicatedRecordException {
-        boolean isDuplicated = repository.findByCpf(form.getCpf()).isPresent();
-
-        if (isDuplicated) {
+    public Customer createNewCustomer(CustomerForm form) {
+        if (repository.findByCpf(form.getCpf()).isPresent()) {
             throw new DuplicatedRecordException(Customer.ENTITY_NAME, Customer.FIELD_CPF_NAME);
-        } else {
-            return repository.save(form.transform());
         }
+
+        return repository.save(form.transform());
     }
 
 }
