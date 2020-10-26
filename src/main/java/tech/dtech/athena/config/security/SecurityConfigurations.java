@@ -14,8 +14,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import tech.dtech.athena.repository.AccountRepository;
-
 @EnableWebSecurity
 @Configuration
 public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
@@ -24,10 +22,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
     private AuthenticationService authenticationService;
 
     @Autowired
-    private TokenService tokenService;
-
-    @Autowired
-    private AccountRepository accountRepository;
+    private AuthenticationUseCase useCase;
 
     @Override
     @Bean
@@ -54,7 +49,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
             .anyRequest().authenticated()
             .and().csrf().disable()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and().addFilterBefore(new TokenAuthenticationFilter(tokenService, accountRepository),
+            .and().addFilterBefore(new TokenAuthenticationFilter(useCase),
                         UsernamePasswordAuthenticationFilter.class);
     }
 
