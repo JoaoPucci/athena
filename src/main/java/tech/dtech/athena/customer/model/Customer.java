@@ -45,7 +45,7 @@ public class Customer {
         this.email = form.getEmail();
         this.address = form.getAddress().transform();
         this.phoneNumber = form.getPhoneNumber();
-        this.birthdate = form.getBirthday();
+        this.birthdate = form.getBirthdate();
     }
 
     public long getId() {
@@ -76,7 +76,7 @@ public class Customer {
         return phoneNumber;
     }
 
-    public LocalDate getBirtdate() {
+    public LocalDate getBirthdate() {
         return birthdate;
     }
 

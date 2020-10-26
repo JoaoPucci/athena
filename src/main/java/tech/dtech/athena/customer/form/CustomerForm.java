@@ -67,7 +67,7 @@ public class CustomerForm {
         return phoneNumber;
     }
 
-    public LocalDate getBirthday() {
+    public LocalDate getBirthdate() {
         return birthdate;
     }
 

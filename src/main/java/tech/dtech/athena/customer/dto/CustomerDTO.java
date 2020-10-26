@@ -23,7 +23,7 @@ public class CustomerDTO {
         this.email = customer.getEmail();
         this.address = new AddressDTO(customer.getAddress());
         this.phoneNumber = customer.getPhoneNumber();
-        this.birthdate = customer.getBirtdate();
+        this.birthdate = customer.getBirthdate();
     }
 
     public long getId() {
