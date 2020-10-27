@@ -1,4 +1,4 @@
-package tech.dtech.athena.config.security;
+package tech.dtech.athena.config.security.token.service;
 
 import java.util.Date;
 
@@ -12,7 +12,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import tech.dtech.athena.model.Account;
 
 @Service
-public class TokenService {
+public class TokenServiceImpl implements TokenService {
 
     @Value("${athena.jwt.expiration_millis}")
     private String expirationMillis;
@@ -20,6 +20,7 @@ public class TokenService {
     @Value("${athena.jwt.secret}")
     private String secret;
 
+    @Override
     public String generate(Authentication authentication) {
         Account loggedUser = (Account) authentication.getPrincipal();
 
@@ -30,6 +31,7 @@ public class TokenService {
                 .signWith(SignatureAlgorithm.HS256, secret).compact();
     }
 
+    @Override
     public boolean isValid(String token) {
         try {
             Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
@@ -40,6 +42,7 @@ public class TokenService {
         return true;
     }
 
+    @Override
     public Long getAccountId(String token) {
         Claims claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
         return Long.parseLong(claims.getSubject());

@@ -1,41 +1,30 @@
-package tech.dtech.athena.config.security;
+package tech.dtech.athena.config.security.token.usecase;
 
-import java.io.IOException;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.stereotype.Component;
 
+import tech.dtech.athena.config.security.token.service.TokenService;
 import tech.dtech.athena.model.Account;
 import tech.dtech.athena.repository.AccountRepository;
 
-public class TokenAuthenticationFilter extends OncePerRequestFilter {
+@Component
+public class TokenAuthenticationUseCaseImpl implements TokenAuthenticationUseCase {
 
+    @Autowired
     private TokenService tokenService;
+
+    @Autowired
     private AccountRepository accountRepository;
 
-    public TokenAuthenticationFilter(TokenService tokenService, AccountRepository accountRepository) {
-        this.tokenService = tokenService;
-        this.accountRepository = accountRepository;
-    }
-
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
-
-        String token = getToken(request);
-        boolean isValid = tokenService.isValid(token);
-
-        if (isValid) {
+    public void authenticateWith(String token) {
+        if (tokenService.isValid(token)) {
             authenticate(token);
         }
-
-        filterChain.doFilter(request, response);
     }
 
     private void authenticate(String token) {
@@ -46,7 +35,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
-    private String getToken(HttpServletRequest request) {
+    @Override
+    public String getTokenFrom(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
 
         if (token == null || token.isEmpty() || !token.startsWith("Bearer")) {
