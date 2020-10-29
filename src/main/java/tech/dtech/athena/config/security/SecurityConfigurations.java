@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import tech.dtech.athena.config.security.token.filter.TokenAuthenticationFilter;
@@ -26,6 +28,11 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private TokenAuthenticationUseCase tokenUseCase;
+
+    @Bean
+    public HttpStatusEntryPoint securityException401EntryPoint(){
+        return new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED);
+    }
 
     @Override
     @Bean
@@ -50,6 +57,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
             .and().authorizeRequests()
             .antMatchers(HttpMethod.POST, "/login").permitAll()
             .anyRequest().authenticated()
+            .and().exceptionHandling().authenticationEntryPoint(securityException401EntryPoint())
             .and().csrf().disable()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and().addFilterBefore(new TokenAuthenticationFilter(tokenUseCase),
