@@ -15,6 +15,7 @@ public class Address {
     private String neighbourhood;
     private String city;
     private String state;
+    private String number;
 
     public Address() {
     }
@@ -26,6 +27,7 @@ public class Address {
         this.neighbourhood = form.getNeighbourhood();
         this.city = form.getCity();
         this.state = form.getState();
+        this.number = form.getNumber();
     }
 
     public String getZipCode() {
@@ -50,6 +52,10 @@ public class Address {
 
     public String getState() {
         return state;
+    }
+
+    public String getNumber() {
+        return number;
     }
 
 }

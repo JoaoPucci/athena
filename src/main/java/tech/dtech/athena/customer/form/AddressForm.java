@@ -34,6 +34,10 @@ public class AddressForm {
     @Length(max = DatabaseConstants.DATABASE_STRING_MAX_LENGTH)
     private String state;
 
+    @NullOrNotBlank
+    @Length(max = DatabaseConstants.DATABASE_STRING_MAX_LENGTH)
+    private String number;
+
     public String getZipCode() {
         return zipCode;
     }
@@ -56,6 +60,10 @@ public class AddressForm {
 
     public String getState() {
         return state;
+    }
+
+    public String getNumber() {
+        return number;
     }
 
     public Address transform() {

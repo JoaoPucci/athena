@@ -10,6 +10,7 @@ public class AddressDTO {
     private String neighbourhood;
     private String city;
     private String state;
+    private String number;
 
     public AddressDTO(Address address) {
         this.zipCode = address.getZipCode();
@@ -18,6 +19,7 @@ public class AddressDTO {
         this.neighbourhood = address.getNeighbourhood();
         this.city = address.getCity();
         this.state = address.getState();
+        this.number = address.getNumber();
     }
 
     public String getZipCode() {
@@ -44,4 +46,7 @@ public class AddressDTO {
         return state;
     }
 
+    public String getNumber() {
+        return number;
+    }
 }
