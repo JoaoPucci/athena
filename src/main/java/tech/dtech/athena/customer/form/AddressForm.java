@@ -5,6 +5,7 @@ import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
 
 import tech.dtech.athena.config.validation.constants.DatabaseConstants;
+import tech.dtech.athena.config.validation.validators.annotations.NullOrNotBlank;
 import tech.dtech.athena.customer.model.Address;
 
 public class AddressForm {
@@ -17,19 +18,19 @@ public class AddressForm {
     @Length(max = DatabaseConstants.DATABASE_STRING_MAX_LENGTH)
     private String addressLine;
 
-    @NotEmpty
+    @NullOrNotBlank
     @Length(max = DatabaseConstants.DATABASE_STRING_MAX_LENGTH)
     private String addressLine2;
 
-    @NotEmpty
+    @NullOrNotBlank
     @Length(max = DatabaseConstants.DATABASE_STRING_MAX_LENGTH)
     private String neighbourhood;
 
-    @NotEmpty
+    @NullOrNotBlank
     @Length(max = DatabaseConstants.DATABASE_STRING_MAX_LENGTH)
     private String city;
 
-    @NotEmpty
+    @NullOrNotBlank
     @Length(max = DatabaseConstants.DATABASE_STRING_MAX_LENGTH)
     private String state;
 

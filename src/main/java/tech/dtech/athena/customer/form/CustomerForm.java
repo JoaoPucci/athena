@@ -2,6 +2,7 @@ package tech.dtech.athena.customer.form;
 
 import java.time.LocalDate;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -41,6 +42,7 @@ public class CustomerForm {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthdate;
 
+    @Valid
     private AddressForm address;
 
     public String getCpf() {
