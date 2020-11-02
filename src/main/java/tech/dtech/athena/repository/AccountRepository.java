@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 
-import tech.dtech.athena.model.Account;
+import tech.dtech.athena.login.model.Account;
 
 public interface AccountRepository extends CrudRepository<Account, Long> {
 

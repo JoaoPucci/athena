@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import tech.dtech.athena.model.Account;
+import tech.dtech.athena.login.model.Account;
 
 @Service
 public class TokenServiceImpl implements TokenService {

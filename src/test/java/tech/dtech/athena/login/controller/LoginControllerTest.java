@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 
-import tech.dtech.athena.model.Account;
+import tech.dtech.athena.login.model.Account;
 import tech.dtech.athena.repository.AccountRepository;
 
 @AutoConfigureMockMvc

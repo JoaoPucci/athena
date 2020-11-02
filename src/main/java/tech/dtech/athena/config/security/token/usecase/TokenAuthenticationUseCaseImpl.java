@@ -8,7 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import tech.dtech.athena.config.security.token.service.TokenService;
-import tech.dtech.athena.model.Account;
+import tech.dtech.athena.login.model.Account;
 import tech.dtech.athena.repository.AccountRepository;
 
 @Component
