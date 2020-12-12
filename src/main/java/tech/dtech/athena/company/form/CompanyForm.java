@@ -19,7 +19,6 @@ public class CompanyForm {
     @CNPJ
     private String cnpj;
 
-    @NotEmpty
     @Length(max = DatabaseConstants.DATABASE_STRING_MAX_LENGTH)
     private String tradeName;
 
