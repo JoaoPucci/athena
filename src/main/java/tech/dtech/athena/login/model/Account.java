@@ -1,4 +1,4 @@
-package tech.dtech.athena.model;
+package tech.dtech.athena.login.model;
 
 import java.util.ArrayList;
 import java.util.Collection;

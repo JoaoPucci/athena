@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import tech.dtech.athena.config.validation.constants.DatabaseConstants;
-import tech.dtech.athena.model.Account;
+import tech.dtech.athena.login.model.Account;
 
 public class LoginForm {
 

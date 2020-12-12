@@ -13,7 +13,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import tech.dtech.athena.AthenaApplication;
 import tech.dtech.athena.config.swagger.provider.IRequestParameterProvider;
-import tech.dtech.athena.model.Account;
+import tech.dtech.athena.login.model.Account;
 
 @Configuration
 public class SwaggerConfigurations {
