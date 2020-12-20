@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import tech.dtech.athena.login.model.Account;
+import tech.dtech.athena.login.repository.AccountRepository;
 
 @DataJpaTest
 @ExtendWith(SpringExtension.class)

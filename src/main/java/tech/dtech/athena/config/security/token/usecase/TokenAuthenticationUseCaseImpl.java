@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import tech.dtech.athena.config.security.token.service.TokenService;
 import tech.dtech.athena.login.model.Account;
-import tech.dtech.athena.repository.AccountRepository;
+import tech.dtech.athena.login.repository.AccountRepository;
 
 @Component
 public class TokenAuthenticationUseCaseImpl implements TokenAuthenticationUseCase {
