@@ -1,4 +1,4 @@
-package tech.dtech.athena.repository;
+package tech.dtech.athena.login.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

@@ -14,5 +14,5 @@ INSERT INTO account_roles(account_id, roles_id) VALUES(3, 1);
 INSERT INTO account_roles(account_id, roles_id) VALUES(2, 2);
 
 -- Document Types (document_type)
-INSERT INTO document_type(name) Values('CPF')
-INSERT INTO document_type(name) Values('RG')
+INSERT INTO document_type(name) VALUES('CPF');
+INSERT INTO document_type(name) VALUES('RG');
