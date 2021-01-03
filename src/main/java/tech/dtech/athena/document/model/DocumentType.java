@@ -13,7 +13,6 @@ public class DocumentType {
     private long id;
 
     private String name;
-    private String mask;
 
     public DocumentType() {
     }
@@ -32,14 +31,6 @@ public class DocumentType {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getMask() {
-        return mask;
-    }
-
-    public void setMask(String mask) {
-        this.mask = mask;
     }
 
 }

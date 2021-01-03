@@ -14,4 +14,5 @@ INSERT INTO account_roles(account_id, roles_id) VALUES(3, 1);
 INSERT INTO account_roles(account_id, roles_id) VALUES(2, 2);
 
 -- Document Types (document_type)
-INSERT INTO document_type(name, mask) Values('CPF', '(\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2})|(\d{3}\.\d{3}\.\d{3}\-\d{2})')
+INSERT INTO document_type(name) Values('CPF')
+INSERT INTO document_type(name) Values('RG')
