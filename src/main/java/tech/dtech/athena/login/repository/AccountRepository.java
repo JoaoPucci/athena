@@ -1,4 +1,4 @@
-package tech.dtech.athena.repository;
+package tech.dtech.athena.login.repository;
 
 import java.util.Optional;
 

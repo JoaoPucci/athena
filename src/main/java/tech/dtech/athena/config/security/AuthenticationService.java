@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import tech.dtech.athena.login.model.Account;
-import tech.dtech.athena.repository.AccountRepository;
+import tech.dtech.athena.login.repository.AccountRepository;
 
 @Service
 public class AuthenticationService implements UserDetailsService {
