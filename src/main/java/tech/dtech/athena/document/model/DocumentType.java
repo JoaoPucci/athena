@@ -8,6 +8,9 @@ import javax.persistence.Id;
 @Entity
 public class DocumentType {
 
+    public static final String ENTITY_NAME = "Tipo de documento";
+    public static final String FIELD_CPF_NAME = "Nome";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -15,6 +18,10 @@ public class DocumentType {
     private String name;
 
     public DocumentType() {
+    }
+
+    public DocumentType(DocumentTypeForm form) {
+        this.name = form.getName();
     }
 
     public long getId() {
