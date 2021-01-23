@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface DocumentTypeRepository extends CrudRepository<DocumentType, Long> {
 
-    Optional<DocumentType> findByName(String cpf);
+    Optional<DocumentType> findByName(String document);
 }
