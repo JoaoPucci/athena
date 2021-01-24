@@ -9,7 +9,7 @@ import javax.persistence.Id;
 public class DocumentType {
 
     public static final String ENTITY_NAME = "Tipo de documento";
-    public static final String FIELD_CPF_NAME = "Nome";
+    public static final String FIELD_NAME_NAME = "Nome";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

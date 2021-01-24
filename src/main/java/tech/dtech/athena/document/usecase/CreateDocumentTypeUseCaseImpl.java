@@ -17,7 +17,7 @@ public class CreateDocumentTypeUseCaseImpl implements CreateDocumentTypeUseCase 
     @Override
     public DocumentType createFrom(DocumentTypeForm form) {
         if (repository.findByName(form.getName()).isPresent()) {
-            throw new DuplicatedRecordException(DocumentType.ENTITY_NAME, DocumentType.FIELD_CPF_NAME);
+            throw new DuplicatedRecordException(DocumentType.ENTITY_NAME, DocumentType.FIELD_NAME_NAME);
         }
 
         return repository.save(form.transform());
