@@ -2,6 +2,7 @@ package tech.dtech.athena.document.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,7 +45,6 @@ public class DocumentControllerTest {
     private static final HttpHeaders headers = new HttpHeaders();
 
     @BeforeAll
-    @Transactional
     static void setUp(@Autowired AccountRepository accountRepository, @Autowired MockMvc mockMvc) throws Exception {
         Account account = new Account(
                 "Goku",
@@ -63,6 +63,11 @@ public class DocumentControllerTest {
         String stringResult = loginResult.getResponse().getContentAsString();
         JsonNode loginKeys = objectMapper.readTree(stringResult);
         headers.add("Authorization", ("Bearer " + loginKeys.get("token")).replace("\"", ""));
+    }
+
+    @AfterAll
+    static void tearDown(@Autowired AccountRepository accountRepository) {
+        accountRepository.deleteAll();
     }
 
     @Transactional
