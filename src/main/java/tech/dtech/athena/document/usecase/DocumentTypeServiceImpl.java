@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class DocumentTypeServiceImpl implements DocumentTypeService {
 
-    private DocumentTypeRepository repository;
+    private final DocumentTypeRepository repository;
 
     public DocumentTypeServiceImpl(@Autowired DocumentTypeRepository repository) {
         this.repository = repository;
