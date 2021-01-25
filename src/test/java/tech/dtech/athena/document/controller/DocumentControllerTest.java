@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,11 +13,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.client.MockMvcClientHttpRequestFactory;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.web.util.UrlPathHelper;
 import tech.dtech.athena.document.model.DocumentType;
 import tech.dtech.athena.document.model.DocumentTypeDTO;
 import tech.dtech.athena.document.usecase.DocumentTypeService;
@@ -65,23 +69,36 @@ public class DocumentControllerTest {
 
     @Transactional
     @Test
-    public void shouldReturnDocumentTypes_whenThereAreTypes() throws Exception {
+    public void shouldCreateDocumentTypesWithPost_ThenRetrieveThemWithTheGetMethod() throws Exception {
         URI uri = new URI("/documents/types");
 
         DocumentType documentType = new DocumentType();
         documentType.setId(1L);
         documentType.setName("CPF");
-        service.createNew(documentType);
+
+        String locationUri = "http://localhost/documents/types/" + documentType.getId();
+
+        mockMvc.perform(MockMvcRequestBuilders.post(uri)
+                .content(objectMapper.writeValueAsString(documentType))
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(headers))
+                .andExpect(MockMvcResultMatchers.header().stringValues(HttpHeaders.LOCATION, locationUri))
+                .andExpect(MockMvcResultMatchers.status().is(HttpStatus.CREATED.value()))
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(new DocumentTypeDTO(documentType))));
 
         DocumentType documentType2 = new DocumentType();
         documentType2.setId(2L);
         documentType2.setName("RG");
-        service.createNew(documentType2);
 
-        List<DocumentType> documentTypes = Arrays.asList(documentType, documentType2);
+        String locationUri2 = "http://localhost/documents/types/" + documentType2.getId();
 
         mockMvc.perform(MockMvcRequestBuilders.post(uri)
-                .content(objectMapper.writeValueAsString(documentTypes)).headers(headers));
+                .content(objectMapper.writeValueAsString(documentType2))
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(headers))
+                .andExpect(MockMvcResultMatchers.header().stringValues(HttpHeaders.LOCATION, locationUri2))
+                .andExpect(MockMvcResultMatchers.status().is(HttpStatus.CREATED.value()))
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(new DocumentTypeDTO(documentType2))));
 
         List<DocumentTypeDTO> response = Arrays.asList(
                 new DocumentTypeDTO(documentType),
