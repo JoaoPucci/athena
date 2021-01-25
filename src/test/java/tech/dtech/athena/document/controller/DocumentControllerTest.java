@@ -83,8 +83,9 @@ public class DocumentControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post(uri)
                 .content(objectMapper.writeValueAsString(documentTypes)).headers(headers));
 
-        List<DocumentTypeDTO> response =
-                Arrays.asList(new DocumentTypeDTO(documentType), new DocumentTypeDTO(documentType2));
+        List<DocumentTypeDTO> response = Arrays.asList(
+                new DocumentTypeDTO(documentType),
+                new DocumentTypeDTO(documentType2));
 
         mockMvc.perform(MockMvcRequestBuilders.get(uri).headers(headers))
                 .andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
