@@ -75,7 +75,7 @@ public class DocumentControllerTest {
 
     @Transactional
     @Test
-    public void shouldCreate_thenTryToCreateDuplicatedAndGetError_thenGetAllThatSucceeded() throws Exception {
+    public void shouldCreateWith201_thenTryToCreateDuplicatedAndGet422_thenGetAllThatSucceededWith200() throws Exception {
         String uriString = "/documents/types";
         URI uri = new URI(uriString);
 
