@@ -38,15 +38,13 @@ import java.util.List;
 public class DocumentControllerTest {
 
     @Autowired
-    private DocumentTypeService service;
-
-    @Autowired
     private MockMvc mockMvc;
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final HttpHeaders headers = new HttpHeaders();
 
     @BeforeAll
+    @Transactional
     static void setUp(@Autowired AccountRepository accountRepository, @Autowired MockMvc mockMvc) throws Exception {
         Account account = new Account(
                 "Goku",
@@ -70,13 +68,14 @@ public class DocumentControllerTest {
     @Transactional
     @Test
     public void shouldCreateDocumentTypesWithPost_ThenRetrieveThemWithTheGetMethod() throws Exception {
-        URI uri = new URI("/documents/types");
+        String uriString = "/documents/types";
+        URI uri = new URI(uriString);
 
         DocumentType documentType = new DocumentType();
         documentType.setId(1L);
         documentType.setName("CPF");
 
-        String locationUri = "http://localhost/documents/types/" + documentType.getId();
+        String locationUri = "http://localhost" + uriString + "/" + documentType.getId();
 
         mockMvc.perform(MockMvcRequestBuilders.post(uri)
                 .content(objectMapper.writeValueAsString(documentType))
@@ -90,7 +89,7 @@ public class DocumentControllerTest {
         documentType2.setId(2L);
         documentType2.setName("RG");
 
-        String locationUri2 = "http://localhost/documents/types/" + documentType2.getId();
+        String locationUri2 = "http://localhost" + uriString + "/" + documentType2.getId();
 
         mockMvc.perform(MockMvcRequestBuilders.post(uri)
                 .content(objectMapper.writeValueAsString(documentType2))
