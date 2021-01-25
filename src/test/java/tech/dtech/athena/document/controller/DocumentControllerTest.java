@@ -1,8 +1,9 @@
 package tech.dtech.athena.document.controller;
 
-import java.net.URI;
-
-import org.junit.jupiter.api.BeforeEach;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +18,17 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import tech.dtech.athena.config.validation.exceptions.dto.ErrorDTO;
+import tech.dtech.athena.customer.DuplicatedRecordException;
 import tech.dtech.athena.document.model.DocumentType;
-import tech.dtech.athena.document.repository.DocumentTypeRepository;
+import tech.dtech.athena.document.model.DocumentTypeDTO;
 import tech.dtech.athena.login.model.Account;
 import tech.dtech.athena.login.repository.AccountRepository;
+
+import java.net.URI;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -32,61 +36,92 @@ import tech.dtech.athena.login.repository.AccountRepository;
 public class DocumentControllerTest {
 
     @Autowired
-    private AccountRepository accountRepository;
-    
-    @Autowired
-    private DocumentTypeRepository repository;
-
-    @Autowired
     private MockMvc mockMvc;
-    
-    private HttpHeaders headers = new HttpHeaders();
-    
-    @BeforeEach
-    public void setUp() throws Exception {
-        Account account = new Account("Goku", "goku@kamehouse.com", "$2a$10$AzmiQREFLZUnxQKj1ZM.mO1uso0WVOsRcP7kV.MqEVKhZ/bV6vQfu");
+
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final HttpHeaders headers = new HttpHeaders();
+
+    @BeforeAll
+    static void setUp(@Autowired AccountRepository accountRepository, @Autowired MockMvc mockMvc) throws Exception {
+        Account account = new Account(
+                "Goku",
+                "goku@kamehouse.com",
+                "$2a$10$AzmiQREFLZUnxQKj1ZM.mO1uso0WVOsRcP7kV.MqEVKhZ/bV6vQfu");
+
         accountRepository.save(account);
 
-        URI loginUri = new URI("/login");
         String json = "{\"email\":\"goku@kamehouse.com\", \"password\":\"12345678\"}";
-        MvcResult loginResult = mockMvc.perform(MockMvcRequestBuilders.post(loginUri).content(json).contentType(MediaType.APPLICATION_JSON)).andReturn();
-        String stringResult = loginResult.getResponse().getContentAsString();
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode loginKeys = mapper.readTree(stringResult);
 
-        headers.add("Authorization",("Bearer " + loginKeys.get("token")).replace("\"", ""));
+        MvcResult loginResult = mockMvc.perform(MockMvcRequestBuilders
+                .post(new URI("/login"))
+                .content(json)
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        String stringResult = loginResult.getResponse().getContentAsString();
+        JsonNode loginKeys = objectMapper.readTree(stringResult);
+        headers.add("Authorization", ("Bearer " + loginKeys.get("token")).replace("\"", ""));
     }
-    
+
+    @AfterAll
+    static void tearDown(@Autowired AccountRepository accountRepository) {
+        accountRepository.deleteAll();
+    }
+
     @Transactional
     @Test
-    public void shouldReturnDocumentTypes_whenThereAreTypes() throws Exception {
-        URI uri = new URI("/documents/types");
-        
-        DocumentType documentType = new DocumentType();
+    public void shouldCreateWith201_thenTryToCreateDuplicatedAndGet422_thenGetAllThatSucceededWith200() throws Exception {
+        String uriString = "/documents/types";
+        URI uri = new URI(uriString);
 
+        DocumentType documentType = new DocumentType();
         documentType.setId(1L);
         documentType.setName("CPF");
-        repository.save(documentType);
 
-        documentType.setId(2L);
-        documentType.setName("RG");
-        repository.save(documentType);
+        String locationUri = "http://localhost" + uriString + "/" + documentType.getId();
 
-        String filledResponse = ""
-                + "["
-                + "    {"
-                + "        \"id\": 1,"
-                + "        \"name\": \"CPF\""
-                + "    },"
-                + "    {"
-                + "        \"id\": 2,"
-                + "        \"name\": \"RG\""
-                + "    }"
-                + "]";
+        mockMvc.perform(MockMvcRequestBuilders.post(uri)
+                .content(objectMapper.writeValueAsString(documentType))
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(headers))
+                .andExpect(MockMvcResultMatchers.header().stringValues(HttpHeaders.LOCATION, locationUri))
+                .andExpect(MockMvcResultMatchers.status().is(HttpStatus.CREATED.value()))
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(new DocumentTypeDTO(documentType))));
+
+        DocumentType documentType2 = new DocumentType();
+        documentType2.setId(2L);
+        documentType2.setName("RG");
+
+        String locationUri2 = "http://localhost" + uriString + "/" + documentType2.getId();
+
+        mockMvc.perform(MockMvcRequestBuilders.post(uri)
+                .content(objectMapper.writeValueAsString(documentType2))
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(headers))
+                .andExpect(MockMvcResultMatchers.header().stringValues(HttpHeaders.LOCATION, locationUri2))
+                .andExpect(MockMvcResultMatchers.status().is(HttpStatus.CREATED.value()))
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(new DocumentTypeDTO(documentType2))));
+
+        DocumentType documentType3 = new DocumentType();
+        documentType3.setId(1L);
+        documentType3.setName("CPF");
+
+        Exception expectedException = new DuplicatedRecordException(DocumentType.ENTITY_NAME, DocumentType.FIELD_NAME_NAME);
+        ErrorDTO expectedError = new ErrorDTO(expectedException.getMessage());
+
+        mockMvc.perform(MockMvcRequestBuilders.post(uri)
+                .content(objectMapper.writeValueAsString(documentType3))
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(headers))
+                .andExpect(MockMvcResultMatchers.status().is(HttpStatus.UNPROCESSABLE_ENTITY.value()))
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(expectedError)));
+
+        List<DocumentTypeDTO> expectedFinalResponse = Arrays.asList(
+                new DocumentTypeDTO(documentType),
+                new DocumentTypeDTO(documentType2));
 
         mockMvc.perform(MockMvcRequestBuilders.get(uri).headers(headers))
                 .andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
-                .andExpect(MockMvcResultMatchers.content().json(filledResponse));
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(expectedFinalResponse)));
     }
 
     @Transactional
@@ -94,10 +129,8 @@ public class DocumentControllerTest {
     public void shouldReturnEmptyResponse_whenThereAreNoTypes() throws Exception {
         URI uri = new URI("/documents/types");
 
-        String emptyResponse = "[]";
-
         mockMvc.perform(MockMvcRequestBuilders.get(uri).headers(headers))
                 .andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
-                .andExpect(MockMvcResultMatchers.content().json(emptyResponse));
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(Collections.emptyList())));
     }
 }
