@@ -22,6 +22,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.web.util.UrlPathHelper;
+import tech.dtech.athena.company.model.Company;
+import tech.dtech.athena.config.validation.exceptions.dto.ErrorDTO;
+import tech.dtech.athena.customer.DuplicatedRecordException;
 import tech.dtech.athena.document.model.DocumentType;
 import tech.dtech.athena.document.model.DocumentTypeDTO;
 import tech.dtech.athena.document.usecase.DocumentTypeService;
@@ -72,7 +75,7 @@ public class DocumentControllerTest {
 
     @Transactional
     @Test
-    public void shouldCreateDocumentTypesWithPost_ThenRetrieveThemWithTheGetMethod() throws Exception {
+    public void shouldCreate_thenTryToCreateDuplicatedAndGetError_thenGetAllThatSucceeded() throws Exception {
         String uriString = "/documents/types";
         URI uri = new URI(uriString);
 
@@ -103,6 +106,20 @@ public class DocumentControllerTest {
                 .andExpect(MockMvcResultMatchers.header().stringValues(HttpHeaders.LOCATION, locationUri2))
                 .andExpect(MockMvcResultMatchers.status().is(HttpStatus.CREATED.value()))
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(new DocumentTypeDTO(documentType2))));
+
+        DocumentType documentType3 = new DocumentType();
+        documentType3.setId(1L);
+        documentType3.setName("CPF");
+
+        Exception expectedException = new DuplicatedRecordException(DocumentType.ENTITY_NAME, DocumentType.FIELD_NAME_NAME);
+        ErrorDTO expectedError = new ErrorDTO(expectedException.getMessage());
+
+        mockMvc.perform(MockMvcRequestBuilders.post(uri)
+                .content(objectMapper.writeValueAsString(documentType3))
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(headers))
+                .andExpect(MockMvcResultMatchers.status().is(HttpStatus.UNPROCESSABLE_ENTITY.value()))
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(expectedError)));
 
         List<DocumentTypeDTO> response = Arrays.asList(
                 new DocumentTypeDTO(documentType),
