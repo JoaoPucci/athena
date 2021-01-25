@@ -11,8 +11,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import tech.dtech.athena.document.model.DocumentType;
 import tech.dtech.athena.document.model.DocumentTypeDTO;
 import tech.dtech.athena.document.model.DocumentTypeForm;
-import tech.dtech.athena.document.usecase.CreateDocumentTypeUseCase;
-import tech.dtech.athena.document.usecase.GetDocumentTypesUseCase;
+import tech.dtech.athena.document.usecase.DocumentTypeService;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -23,21 +22,18 @@ import java.util.List;
 public class DocumentController {
 
     @Autowired
-    private GetDocumentTypesUseCase getDocumentUseCase;
-
-    @Autowired
-    private CreateDocumentTypeUseCase createDocumentTypeUseCase;
+    private DocumentTypeService documentTypeService;
 
     @GetMapping(path = "/types")
     public ResponseEntity<List<DocumentTypeDTO>> get() {
-        List<DocumentType> documentTypes = getDocumentUseCase.execute();
+        List<DocumentType> documentTypes = documentTypeService.getAll();
 
         return ResponseEntity.ok(DocumentTypeDTO.from(documentTypes));
     }
 
     @PostMapping(path = "/types")
     public ResponseEntity<DocumentTypeDTO> create(@RequestBody @Valid DocumentTypeForm form, UriComponentsBuilder uriBuilder) {
-        DocumentType documentType = createDocumentTypeUseCase.createFrom(form);
+        DocumentType documentType = documentTypeService.createNew(form);
         URI uri = uriBuilder.path("types/{id}").buildAndExpand(documentType.getId()).toUri();
 
         return ResponseEntity.created(uri).body(new DocumentTypeDTO(documentType));
