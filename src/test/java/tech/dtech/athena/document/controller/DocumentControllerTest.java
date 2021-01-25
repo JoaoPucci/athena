@@ -2,7 +2,7 @@ package tech.dtech.athena.document.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,21 +34,16 @@ import java.util.List;
 public class DocumentControllerTest {
 
     @Autowired
-    private AccountRepository accountRepository;
-
-    @Autowired
     private DocumentTypeService service;
 
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final HttpHeaders headers = new HttpHeaders();
 
-    private final HttpHeaders headers = new HttpHeaders();
-
-    @BeforeEach
-    public void setUp() throws Exception {
+    @BeforeAll
+    static void setUp(@Autowired AccountRepository accountRepository, @Autowired MockMvc mockMvc) throws Exception {
         Account account = new Account("Goku", "goku@kamehouse.com", "$2a$10$AzmiQREFLZUnxQKj1ZM.mO1uso0WVOsRcP7kV.MqEVKhZ/bV6vQfu");
         accountRepository.save(account);
 
@@ -56,6 +51,7 @@ public class DocumentControllerTest {
         String json = "{\"email\":\"goku@kamehouse.com\", \"password\":\"12345678\"}";
         MvcResult loginResult = mockMvc.perform(MockMvcRequestBuilders.post(loginUri).content(json).contentType(MediaType.APPLICATION_JSON)).andReturn();
         String stringResult = loginResult.getResponse().getContentAsString();
+
         JsonNode loginKeys = objectMapper.readTree(stringResult);
 
         headers.add("Authorization", ("Bearer " + loginKeys.get("token")).replace("\"", ""));
