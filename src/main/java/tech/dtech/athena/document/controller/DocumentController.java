@@ -33,7 +33,7 @@ public class DocumentController {
 
     @PostMapping(path = "/types")
     public ResponseEntity<DocumentTypeDTO> create(@RequestBody @Valid DocumentTypeForm form, UriComponentsBuilder uriBuilder) {
-        DocumentType documentType = documentTypeService.createNew(form);
+        DocumentType documentType = documentTypeService.createNew(form.transform());
         URI uri = uriBuilder.path("types/{id}").buildAndExpand(documentType.getId()).toUri();
 
         return ResponseEntity.created(uri).body(new DocumentTypeDTO(documentType));
