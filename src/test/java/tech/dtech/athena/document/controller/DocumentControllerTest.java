@@ -44,16 +44,22 @@ public class DocumentControllerTest {
 
     @BeforeAll
     static void setUp(@Autowired AccountRepository accountRepository, @Autowired MockMvc mockMvc) throws Exception {
-        Account account = new Account("Goku", "goku@kamehouse.com", "$2a$10$AzmiQREFLZUnxQKj1ZM.mO1uso0WVOsRcP7kV.MqEVKhZ/bV6vQfu");
+        Account account = new Account(
+                "Goku",
+                "goku@kamehouse.com",
+                "$2a$10$AzmiQREFLZUnxQKj1ZM.mO1uso0WVOsRcP7kV.MqEVKhZ/bV6vQfu");
+
         accountRepository.save(account);
 
-        URI loginUri = new URI("/login");
         String json = "{\"email\":\"goku@kamehouse.com\", \"password\":\"12345678\"}";
-        MvcResult loginResult = mockMvc.perform(MockMvcRequestBuilders.post(loginUri).content(json).contentType(MediaType.APPLICATION_JSON)).andReturn();
+
+        MvcResult loginResult = mockMvc.perform(MockMvcRequestBuilders
+                .post(new URI("/login"))
+                .content(json)
+                .contentType(MediaType.APPLICATION_JSON)).andReturn();
+
         String stringResult = loginResult.getResponse().getContentAsString();
-
         JsonNode loginKeys = objectMapper.readTree(stringResult);
-
         headers.add("Authorization", ("Bearer " + loginKeys.get("token")).replace("\"", ""));
     }
 
@@ -74,9 +80,11 @@ public class DocumentControllerTest {
 
         List<DocumentType> documentTypes = Arrays.asList(documentType, documentType2);
 
-        mockMvc.perform(MockMvcRequestBuilders.post(uri).content(objectMapper.writeValueAsString(documentTypes)).headers(headers));
+        mockMvc.perform(MockMvcRequestBuilders.post(uri)
+                .content(objectMapper.writeValueAsString(documentTypes)).headers(headers));
 
-        List<DocumentTypeDTO> response = Arrays.asList(new DocumentTypeDTO(documentType), new DocumentTypeDTO(documentType2));
+        List<DocumentTypeDTO> response =
+                Arrays.asList(new DocumentTypeDTO(documentType), new DocumentTypeDTO(documentType2));
 
         mockMvc.perform(MockMvcRequestBuilders.get(uri).headers(headers))
                 .andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
