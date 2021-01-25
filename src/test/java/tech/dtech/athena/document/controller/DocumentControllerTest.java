@@ -121,13 +121,13 @@ public class DocumentControllerTest {
                 .andExpect(MockMvcResultMatchers.status().is(HttpStatus.UNPROCESSABLE_ENTITY.value()))
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(expectedError)));
 
-        List<DocumentTypeDTO> response = Arrays.asList(
+        List<DocumentTypeDTO> expectedFinalResponse = Arrays.asList(
                 new DocumentTypeDTO(documentType),
                 new DocumentTypeDTO(documentType2));
 
         mockMvc.perform(MockMvcRequestBuilders.get(uri).headers(headers))
                 .andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
-                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(response)));
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(expectedFinalResponse)));
     }
 
     @Transactional
