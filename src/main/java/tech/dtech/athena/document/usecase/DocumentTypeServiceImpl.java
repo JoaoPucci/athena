@@ -7,6 +7,7 @@ import tech.dtech.athena.document.model.DocumentType;
 import tech.dtech.athena.document.repository.DocumentTypeRepository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class DocumentTypeServiceImpl implements DocumentTypeService {
@@ -29,5 +30,16 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         }
 
         return repository.save(documentType);
+    }
+
+    @Override
+    public DocumentType update(long id, DocumentType documentType) {
+        documentType.setId(id);
+
+        if (repository.findById(id).isPresent()) {
+            return repository.save(documentType);
+        } else {
+            throw new NoSuchElementException(DocumentType.ENTITY_NAME + " não encontrado");
+        }
     }
 }

@@ -2,6 +2,7 @@ package tech.dtech.athena.config.validation.exceptions.handler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -41,6 +42,12 @@ public class ControllerExceptionHandler {
     @ResponseStatus(code = HttpStatus.UNPROCESSABLE_ENTITY)
     @ExceptionHandler(DuplicatedRecordException.class)
     public ErrorDTO handle(DuplicatedRecordException exception) {
+        return new ErrorDTO(exception.getMessage());
+    }
+
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NoSuchElementException.class)
+    public ErrorDTO handle(NoSuchElementException exception) {
         return new ErrorDTO(exception.getMessage());
     }
 }
