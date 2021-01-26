@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 import tech.dtech.athena.document.model.DocumentType;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -41,5 +42,21 @@ public class DocumentTypeRepositoryTest {
     @Test
     public void shouldNotFindDocumentType_GivenItsName_WhenNonExistant() {
         assertTrue(repository.findByName("Ninja headband").isEmpty());
+    }
+
+    @Transactional
+    @Test
+    public void shouldUpdateDocumentType_GivenAnExistantId() {
+        String wrongName = "super dorkment";
+        String correctName = "super document";
+
+        DocumentType documentType = new DocumentType();
+        documentType.setName(wrongName);
+        DocumentType savedDocumentType = entityManager.persist(documentType);
+        savedDocumentType.setName(correctName);
+
+        repository.save(savedDocumentType);
+
+        assertTrue(repository.findByName(correctName).isPresent());
     }
 }
