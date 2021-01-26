@@ -6,13 +6,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import tech.dtech.athena.config.validation.exceptions.ResourceNotFoundException;
 import tech.dtech.athena.document.model.DocumentType;
 import tech.dtech.athena.document.repository.DocumentTypeRepository;
 import tech.dtech.athena.document.usecase.DocumentTypeServiceImpl;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -96,6 +96,6 @@ class DocumentTypeServiceTest {
 
         Mockito.when(repository.findById(documentType.getId())).thenReturn(Optional.empty());
 
-        assertThrows(NoSuchElementException.class, () -> service.update(documentType.getId(), documentType));
+        assertThrows(ResourceNotFoundException.class, () -> service.update(documentType.getId(), documentType));
     }
 }

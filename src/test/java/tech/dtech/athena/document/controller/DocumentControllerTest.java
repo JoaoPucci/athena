@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.transaction.annotation.Transactional;
+import tech.dtech.athena.config.validation.exceptions.ResourceNotFoundException;
 import tech.dtech.athena.config.validation.exceptions.dto.ErrorDTO;
 import tech.dtech.athena.customer.DuplicatedRecordException;
 import tech.dtech.athena.document.model.DocumentType;
@@ -40,6 +41,7 @@ public class DocumentControllerTest {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final HttpHeaders headers = new HttpHeaders();
+    private static int idCounter = 0;
 
     @BeforeAll
     static void setUp(@Autowired AccountRepository accountRepository, @Autowired MockMvc mockMvc) throws Exception {
@@ -74,7 +76,7 @@ public class DocumentControllerTest {
         URI uri = new URI(uriString);
 
         DocumentType documentType = new DocumentType();
-        documentType.setId(1L);
+        documentType.setId(++idCounter);
         documentType.setName("CPF");
 
         String locationUri = "http://localhost" + uriString + "/" + documentType.getId();
@@ -88,7 +90,7 @@ public class DocumentControllerTest {
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(new DocumentTypeDTO(documentType))));
 
         DocumentType documentType2 = new DocumentType();
-        documentType2.setId(2L);
+        documentType2.setId(++idCounter);
         documentType2.setName("RG");
 
         String locationUri2 = "http://localhost" + uriString + "/" + documentType2.getId();
@@ -102,7 +104,7 @@ public class DocumentControllerTest {
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(new DocumentTypeDTO(documentType2))));
 
         DocumentType documentType3 = new DocumentType();
-        documentType3.setId(1L);
+        documentType3.setId(0L);
         documentType3.setName("CPF");
 
         Exception expectedException = new DuplicatedRecordException(DocumentType.ENTITY_NAME, DocumentType.FIELD_NAME_NAME);
@@ -141,7 +143,7 @@ public class DocumentControllerTest {
         URI uri = new URI(uriString);
 
         DocumentType documentType = new DocumentType();
-        documentType.setId(1L);
+        documentType.setId(++idCounter);
         documentType.setName("CPF");
 
         String locationUri = "http://localhost" + uriString + "/" + documentType.getId();
@@ -155,7 +157,7 @@ public class DocumentControllerTest {
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(new DocumentTypeDTO(documentType))));
 
         DocumentType updatedDocumentType = new DocumentType();
-        updatedDocumentType.setId(1L);
+        updatedDocumentType.setId(idCounter);
         updatedDocumentType.setName("RG");
 
         mockMvc.perform(MockMvcRequestBuilders.put(uri + "/" + documentType.getId())
@@ -181,14 +183,17 @@ public class DocumentControllerTest {
         URI uri = new URI(uriString);
 
         DocumentType updatedDocumentType = new DocumentType();
-        updatedDocumentType.setId(1L);
+        updatedDocumentType.setId(0L);
         updatedDocumentType.setName("RG");
+
+        Exception exception = new ResourceNotFoundException(DocumentType.ENTITY_NAME);
+        String errorMessage = exception.getMessage();
 
         mockMvc.perform(MockMvcRequestBuilders.put(uri + "/" + updatedDocumentType.getId())
                 .content(objectMapper.writeValueAsString(updatedDocumentType))
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(headers))
                 .andExpect(MockMvcResultMatchers.status().is(HttpStatus.NOT_FOUND.value()))
-                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(new ErrorDTO(DocumentType.ENTITY_NAME + " não encontrado"))));
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(new ErrorDTO(errorMessage))));
     }
 }

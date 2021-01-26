@@ -2,6 +2,7 @@ package tech.dtech.athena.document.usecase;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tech.dtech.athena.config.validation.exceptions.ResourceNotFoundException;
 import tech.dtech.athena.customer.DuplicatedRecordException;
 import tech.dtech.athena.document.model.DocumentType;
 import tech.dtech.athena.document.repository.DocumentTypeRepository;
@@ -39,7 +40,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         if (repository.findById(id).isPresent()) {
             return repository.save(documentType);
         } else {
-            throw new NoSuchElementException(DocumentType.ENTITY_NAME + " não encontrado");
+            throw new ResourceNotFoundException(DocumentType.ENTITY_NAME);
         }
     }
 }
