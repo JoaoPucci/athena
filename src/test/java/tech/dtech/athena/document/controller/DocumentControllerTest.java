@@ -167,7 +167,6 @@ public class DocumentControllerTest {
                 .andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(new DocumentTypeDTO(updatedDocumentType))));
 
-
         List<DocumentTypeDTO> expectedFinalResponse = Collections.singletonList(
                 new DocumentTypeDTO(updatedDocumentType));
 
