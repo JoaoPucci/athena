@@ -12,10 +12,14 @@ import tech.dtech.athena.document.usecase.DocumentTypeServiceImpl;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 class DocumentTypeServiceTest {
@@ -61,5 +65,37 @@ class DocumentTypeServiceTest {
         Mockito.verify(repository, Mockito.times(1)).save(originalDocumentType);
         assertSame(expectedSavedDocumentType, actualSavedDocumentType);
         assertEquals(originalDocumentType.getName(), actualSavedDocumentType.getName());
+    }
+
+    @Test
+    void shouldCallRepositorySaveOnce_WhenServiceUpdateIsCalled() {
+        DocumentType documentType = new DocumentType();
+        documentType.setId(1L);
+        documentType.setName("xinxila");
+
+        DocumentType updatedDocumentType = new DocumentType();
+        updatedDocumentType.setId(1L);
+        updatedDocumentType.setName("xinxila is so cool");
+
+        Mockito.when(repository.findById(documentType.getId())).thenReturn(Optional.of(documentType));
+        Mockito.when(repository.save(documentType)).thenReturn(updatedDocumentType);
+
+        DocumentType currentDocumentType = service.update(documentType.getId(), documentType);
+
+        Mockito.verify(repository, Mockito.times(1)).save(documentType);
+        assertSame(updatedDocumentType, currentDocumentType);
+        assertNotEquals(documentType.getName(), currentDocumentType.getName());
+        assertEquals(updatedDocumentType.getName(), currentDocumentType.getName());
+    }
+
+    @Test
+    void shouldThrowException_whenIdDoesNotExistOnDatasource() {
+        DocumentType documentType = new DocumentType();
+        documentType.setId(1L);
+        documentType.setName("xinxila");
+
+        Mockito.when(repository.findById(documentType.getId())).thenReturn(Optional.empty());
+
+        assertThrows(NoSuchElementException.class, () -> service.update(documentType.getId(), documentType));
     }
 }
