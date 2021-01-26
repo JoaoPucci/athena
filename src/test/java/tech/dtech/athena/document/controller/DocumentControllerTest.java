@@ -133,4 +133,62 @@ public class DocumentControllerTest {
                 .andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(Collections.emptyList())));
     }
+
+    @Transactional
+    @Test
+    public void shouldCreateNewRecordWith201_ThenUpdateItWith200() throws Exception {
+        String uriString = "/documents/types";
+        URI uri = new URI(uriString);
+
+        DocumentType documentType = new DocumentType();
+        documentType.setId(1L);
+        documentType.setName("CPF");
+
+        String locationUri = "http://localhost" + uriString + "/" + documentType.getId();
+
+        mockMvc.perform(MockMvcRequestBuilders.post(uri)
+                .content(objectMapper.writeValueAsString(documentType))
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(headers))
+                .andExpect(MockMvcResultMatchers.header().stringValues(HttpHeaders.LOCATION, locationUri))
+                .andExpect(MockMvcResultMatchers.status().is(HttpStatus.CREATED.value()))
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(new DocumentTypeDTO(documentType))));
+
+        DocumentType updatedDocumentType = new DocumentType();
+        updatedDocumentType.setId(1L);
+        updatedDocumentType.setName("RG");
+
+        mockMvc.perform(MockMvcRequestBuilders.put(uri + "/" + documentType.getId())
+                .content(objectMapper.writeValueAsString(updatedDocumentType))
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(headers))
+                .andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(new DocumentTypeDTO(updatedDocumentType))));
+
+
+        List<DocumentTypeDTO> expectedFinalResponse = Collections.singletonList(
+                new DocumentTypeDTO(updatedDocumentType));
+
+        mockMvc.perform(MockMvcRequestBuilders.get(uri).headers(headers))
+                .andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(expectedFinalResponse)));
+    }
+
+    @Transactional
+    @Test
+    public void shouldTryToUpdateRecord_ThenFailWithNoSuchElementException_AndReturn404() throws Exception {
+        String uriString = "/documents/types";
+        URI uri = new URI(uriString);
+
+        DocumentType updatedDocumentType = new DocumentType();
+        updatedDocumentType.setId(1L);
+        updatedDocumentType.setName("RG");
+
+        mockMvc.perform(MockMvcRequestBuilders.put(uri + "/" + updatedDocumentType.getId())
+                .content(objectMapper.writeValueAsString(updatedDocumentType))
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(headers))
+                .andExpect(MockMvcResultMatchers.status().is(HttpStatus.NOT_FOUND.value()))
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(new ErrorDTO(DocumentType.ENTITY_NAME + " não encontrado"))));
+    }
 }
