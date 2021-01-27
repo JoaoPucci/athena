@@ -30,9 +30,9 @@ public class LoginControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private String emptyEmailError = "{\"field\":\"email\",\"message\":\"must not be empty\"}";
+    private String emptyEmailError = "{\"field\":\"email\",\"message\":\"must not be blank\"}";
     private String malformedEmailError = "{\"field\":\"email\",\"message\":\"must be a well-formed email address\"}";
-    private String emptyPasswordError = "{\"field\":\"password\",\"message\":\"must not be empty\"}";
+    private String emptyPasswordError = "{\"field\":\"password\",\"message\":\"must not be blank\"}";
     private String invalidLengthPasswordError = "{\"field\":\"password\",\"message\":\"length must be between 8 and 255\"}";
 
     @Transactional
