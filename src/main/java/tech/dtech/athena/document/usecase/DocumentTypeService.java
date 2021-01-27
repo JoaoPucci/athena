@@ -9,4 +9,6 @@ public interface DocumentTypeService {
     List<DocumentType> getAll();
 
     DocumentType createNew(DocumentType documentType);
+
+    DocumentType update(long id, DocumentType documentType);
 }

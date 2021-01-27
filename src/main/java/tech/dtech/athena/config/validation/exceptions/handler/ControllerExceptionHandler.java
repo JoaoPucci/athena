@@ -1,8 +1,5 @@
 package tech.dtech.athena.config.validation.exceptions.handler;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -12,10 +9,14 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
+import tech.dtech.athena.config.validation.exceptions.ResourceNotFoundException;
 import tech.dtech.athena.config.validation.exceptions.dto.ErrorDTO;
 import tech.dtech.athena.config.validation.exceptions.dto.ValidationErrorDTO;
 import tech.dtech.athena.customer.DuplicatedRecordException;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 public class ControllerExceptionHandler {
@@ -41,6 +42,12 @@ public class ControllerExceptionHandler {
     @ResponseStatus(code = HttpStatus.UNPROCESSABLE_ENTITY)
     @ExceptionHandler(DuplicatedRecordException.class)
     public ErrorDTO handle(DuplicatedRecordException exception) {
+        return new ErrorDTO(exception.getMessage());
+    }
+
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ErrorDTO handle(ResourceNotFoundException exception) {
         return new ErrorDTO(exception.getMessage());
     }
 }
