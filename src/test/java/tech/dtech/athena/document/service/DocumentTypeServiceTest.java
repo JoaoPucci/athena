@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -89,7 +90,7 @@ class DocumentTypeServiceTest {
     }
 
     @Test
-    void shouldThrowException_whenIdDoesNotExistOnDatasource() {
+    void shouldTryToEdit_ThenThrowException_WhenIdDoesNotExistOnDatasource() {
         DocumentType documentType = new DocumentType();
         documentType.setId(1L);
         documentType.setName("xinxila");
@@ -97,5 +98,26 @@ class DocumentTypeServiceTest {
         Mockito.when(repository.findById(documentType.getId())).thenReturn(Optional.empty());
 
         assertThrows(ResourceNotFoundException.class, () -> service.update(documentType.getId(), documentType));
+    }
+
+    @Test
+    void shouldTryToDelete_ThenThrowException_WhenIdDoesNotExistOnDatasource() {
+        DocumentType documentType = new DocumentType();
+        documentType.setId(1L);
+        documentType.setName("xinxila");
+
+        Mockito.when(repository.findById(documentType.getId())).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> service.delete(documentType.getId()));
+    }
+
+    @Test
+    void shouldCallRepositoryDeleteByIdOnce_WhenServiceDeleteIsCalled_ThenDoNotThrowExceptions() {
+        DocumentType documentType = new DocumentType();
+        documentType.setId(1L);
+        documentType.setName("xinxila");
+
+        Mockito.when(repository.findById(documentType.getId())).thenReturn(Optional.of(documentType));
+        assertDoesNotThrow(() -> service.delete(documentType.getId()));
     }
 }

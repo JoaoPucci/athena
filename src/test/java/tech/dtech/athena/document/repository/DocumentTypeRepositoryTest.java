@@ -26,14 +26,14 @@ public class DocumentTypeRepositoryTest {
     private TestEntityManager entityManager;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         DocumentType documentType = new DocumentType();
         documentType.setName("Hunter license");
         entityManager.persist(documentType);
     }
 
     @Test
-    public void shouldFindDocumentType_GivenItsName() {
+    void shouldFindDocumentType_GivenItsName() {
         DocumentType documentType = repository.findByName("Hunter license").orElse(null);
 
         assertNotNull(documentType);
@@ -41,13 +41,13 @@ public class DocumentTypeRepositoryTest {
     }
 
     @Test
-    public void shouldNotFindDocumentType_GivenItsName_WhenNonExistant() {
+    void shouldNotFindDocumentType_GivenItsName_WhenNonExistant() {
         assertTrue(repository.findByName("Ninja headband").isEmpty());
     }
 
     @Transactional
     @Test
-    public void shouldUpdateDocumentType_GivenAnExistantId() {
+    void shouldUpdateDocumentType_GivenAnExistantId() {
         String wrongName = "super dorkment";
         String correctName = "super document";
 
@@ -60,5 +60,14 @@ public class DocumentTypeRepositoryTest {
 
         assertTrue(repository.findByName(correctName).isPresent());
         assertTrue(repository.findByName(wrongName).isEmpty());
+    }
+
+    @Transactional
+    @Test
+    void shouldDeleteDocumentType_GivenAnId() {
+        DocumentType documentType = repository.findAll().iterator().next();
+        repository.deleteById(documentType.getId());
+
+        assertFalse(repository.findById(documentType.getId()).isPresent());
     }
 }
