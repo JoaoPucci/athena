@@ -8,7 +8,6 @@ import tech.dtech.athena.document.model.DocumentType;
 import tech.dtech.athena.document.repository.DocumentTypeRepository;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 public class DocumentTypeServiceImpl implements DocumentTypeService {
@@ -39,6 +38,15 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
 
         if (repository.findById(id).isPresent()) {
             return repository.save(documentType);
+        } else {
+            throw new ResourceNotFoundException(DocumentType.ENTITY_NAME);
+        }
+    }
+
+    @Override
+    public void delete(long id) {
+        if (repository.findById(id).isPresent()) {
+            repository.deleteById(id);
         } else {
             throw new ResourceNotFoundException(DocumentType.ENTITY_NAME);
         }

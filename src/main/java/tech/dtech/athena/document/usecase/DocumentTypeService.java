@@ -11,4 +11,6 @@ public interface DocumentTypeService {
     DocumentType createNew(DocumentType documentType);
 
     DocumentType update(long id, DocumentType documentType);
+
+    void delete(long id);
 }
