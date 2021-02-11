@@ -25,9 +25,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
 
     @Override
     public DocumentType get(long id) {
-        return repository.findById(id).orElseThrow(() -> {
-            throw new ResourceNotFoundException(DocumentType.ENTITY_NAME);
-        });
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(DocumentType.ENTITY_NAME));
     }
 
     @Override
