@@ -34,6 +34,11 @@ public class DocumentController {
         return ResponseEntity.ok(DocumentTypeDTO.from(documentTypes));
     }
 
+    @GetMapping(path = "/types/{id}")
+    public ResponseEntity<DocumentTypeDTO> get(@PathVariable long id) {
+        return ResponseEntity.ok(new DocumentTypeDTO(documentTypeService.get(id)));
+    }
+
     @PostMapping(path = "/types")
     public ResponseEntity<DocumentTypeDTO> create(@RequestBody @Valid DocumentTypeForm form, UriComponentsBuilder uriBuilder) {
         DocumentType documentType = documentTypeService.createNew(form.transform());
