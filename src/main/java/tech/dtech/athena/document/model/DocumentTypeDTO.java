@@ -9,7 +9,7 @@ public class DocumentTypeDTO {
     private String name;
 
     public static List<DocumentTypeDTO> from(List<DocumentType> documentTypes) {
-        return documentTypes.stream().map(type -> new DocumentTypeDTO(type)).collect(Collectors.toList());
+        return documentTypes.stream().map(DocumentTypeDTO::new).collect(Collectors.toList());
     }
 
     public DocumentTypeDTO(DocumentType documentType) {

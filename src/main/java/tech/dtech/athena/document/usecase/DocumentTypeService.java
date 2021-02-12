@@ -8,6 +8,8 @@ public interface DocumentTypeService {
 
     List<DocumentType> getAll();
 
+    DocumentType get(long id);
+
     DocumentType createNew(DocumentType documentType);
 
     DocumentType update(long id, DocumentType documentType);

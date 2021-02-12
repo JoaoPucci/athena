@@ -24,6 +24,11 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     }
 
     @Override
+    public DocumentType get(long id) {
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(DocumentType.ENTITY_NAME));
+    }
+
+    @Override
     public DocumentType createNew(DocumentType documentType) {
         if (repository.findByName(documentType.getName()).isPresent()) {
             throw new DuplicatedRecordException(DocumentType.ENTITY_NAME, DocumentType.FIELD_NAME_NAME);

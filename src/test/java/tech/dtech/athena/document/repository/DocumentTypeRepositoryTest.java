@@ -1,6 +1,5 @@
 package tech.dtech.athena.document.repository;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,23 +24,42 @@ public class DocumentTypeRepositoryTest {
     @Autowired
     private TestEntityManager entityManager;
 
-    @BeforeEach
-    void setUp() {
+    @Test
+    void shouldFindDocumentType_GivenItsName() {
         DocumentType documentType = new DocumentType();
         documentType.setName("Hunter license");
         entityManager.persist(documentType);
+
+        DocumentType foundDocumentType = repository.findByName(documentType.getName()).orElse(null);
+
+        assertNotNull(documentType);
+        assertEquals(documentType, foundDocumentType);
     }
 
     @Test
-    void shouldFindDocumentType_GivenItsName() {
-        DocumentType documentType = repository.findByName("Hunter license").orElse(null);
+    void shouldFindDocumentType_GivenItsId() {
+        DocumentType newDocumentType = new DocumentType();
+        newDocumentType.setName("Super document type");
+        DocumentType savedDocumentType = entityManager.persist(newDocumentType);
+
+        DocumentType documentType = repository.findById(savedDocumentType.getId()).orElse(null);
 
         assertNotNull(documentType);
-        assertEquals("Hunter license", documentType.getName());
+        assertEquals(newDocumentType, documentType);
+    }
+
+    @Test
+    void shouldReturnNull_WhenSearchByNonExistentId() {
+        long someId = (long) (Math.random() + 999);
+        assertTrue(repository.findById(someId).isEmpty());
     }
 
     @Test
     void shouldNotFindDocumentType_GivenItsName_WhenNonExistant() {
+        DocumentType newDocumentType = new DocumentType();
+        newDocumentType.setName("Super document type");
+        entityManager.persist(newDocumentType);
+
         assertTrue(repository.findByName("Ninja headband").isEmpty());
     }
 
@@ -65,9 +83,11 @@ public class DocumentTypeRepositoryTest {
     @Transactional
     @Test
     void shouldDeleteDocumentType_GivenAnId() {
-        DocumentType documentType = repository.findAll().iterator().next();
-        repository.deleteById(documentType.getId());
+        DocumentType newDocumentType = new DocumentType();
+        newDocumentType.setName("Super document type");
+        DocumentType savedDocumentType = entityManager.persist(newDocumentType);
 
-        assertFalse(repository.findById(documentType.getId()).isPresent());
+        repository.deleteById(savedDocumentType.getId());
+        assertFalse(repository.findById(newDocumentType.getId()).isPresent());
     }
 }

@@ -120,4 +120,25 @@ class DocumentTypeServiceTest {
         Mockito.when(repository.findById(documentType.getId())).thenReturn(Optional.of(documentType));
         assertDoesNotThrow(() -> service.delete(documentType.getId()));
     }
+
+    @Test
+    void shouldTryToFindById_ThenThrowException_WhenIdDoesNotExistOnDatasource() {
+        DocumentType documentType = new DocumentType();
+        documentType.setId(1L);
+        documentType.setName("xinxila");
+
+        Mockito.when(repository.findById(documentType.getId())).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> service.get(documentType.getId()));
+    }
+
+    @Test
+    void shouldCallRepositoryFindByIdOnce_WhenServiceGetIsCalled_ThenDoNotThrowExceptions() {
+        DocumentType documentType = new DocumentType();
+        documentType.setId(1L);
+        documentType.setName("xinxila");
+
+        Mockito.when(repository.findById(documentType.getId())).thenReturn(Optional.of(documentType));
+        assertDoesNotThrow(() -> service.get(documentType.getId()));
+    }
 }

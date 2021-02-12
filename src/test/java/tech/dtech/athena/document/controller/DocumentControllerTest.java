@@ -217,7 +217,6 @@ public class DocumentControllerTest {
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(new DocumentTypeDTO(documentType))));
 
         mockMvc.perform(MockMvcRequestBuilders.delete(uri + "/" + documentType.getId())
-                .content(objectMapper.writeValueAsString(documentType))
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(headers))
                 .andExpect(MockMvcResultMatchers.status().is(HttpStatus.NO_CONTENT.value()));
@@ -237,6 +236,53 @@ public class DocumentControllerTest {
         String errorMessage = exception.getMessage();
 
         mockMvc.perform(MockMvcRequestBuilders.delete(uri + "/" + documentType.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(headers))
+                .andExpect(MockMvcResultMatchers.status().is(HttpStatus.NOT_FOUND.value()))
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(new ErrorDTO(errorMessage))));
+    }
+
+    @Transactional
+    @Test
+    public void shouldCreateDocumentType_ThenGetItAndReturnItWith200() throws Exception {
+        String uriString = "/documents/types";
+        URI uri = new URI(uriString);
+
+        DocumentType documentType = new DocumentType();
+        documentType.setId(++idCounter);
+        documentType.setName("CPF");
+
+        String locationUri = "http://localhost" + uriString + "/" + documentType.getId();
+
+        mockMvc.perform(MockMvcRequestBuilders.post(uri)
+                .content(objectMapper.writeValueAsString(documentType))
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(headers))
+                .andExpect(MockMvcResultMatchers.header().stringValues(HttpHeaders.LOCATION, locationUri))
+                .andExpect(MockMvcResultMatchers.status().is(HttpStatus.CREATED.value()))
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(new DocumentTypeDTO(documentType))));
+
+        mockMvc.perform(MockMvcRequestBuilders.get(uri + "/" + documentType.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .headers(headers))
+                .andExpect(MockMvcResultMatchers.status().is(HttpStatus.OK.value()))
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(documentType)));
+    }
+
+    @Transactional
+    @Test
+    public void shouldTryToFindById_ThenFailWithNoSuchElementException_AndReturn404() throws Exception {
+        String uriString = "/documents/types";
+        URI uri = new URI(uriString);
+
+        DocumentType documentType = new DocumentType();
+        documentType.setId(0L);
+        documentType.setName("RG");
+
+        Exception exception = new ResourceNotFoundException(DocumentType.ENTITY_NAME);
+        String errorMessage = exception.getMessage();
+
+        mockMvc.perform(MockMvcRequestBuilders.get(uri + "/" + documentType.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .headers(headers))
                 .andExpect(MockMvcResultMatchers.status().is(HttpStatus.NOT_FOUND.value()))
